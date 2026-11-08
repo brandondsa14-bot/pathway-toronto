@@ -27,3 +27,14 @@ button:disabled{opacity:.5;cursor:not-allowed}
  .sidefoot{margin-top:auto}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* Day 03: real outdoor Google Maps view, separate from the illustrative PATH schematic */
+.googlemap-container{position:absolute;inset:0;background:#ddeae6}
+.googlemap-surface{position:absolute;inset:0;width:100%;height:100%}
+.googlemap-loading,.googlemap-fallback{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:30px;background:#e9f2f0;color:#21494b;line-height:1.65;z-index:4}
+.googlemap-fallback strong{font-size:20px}
+.googlemap-fallback p{font-size:13px;max-width:450px}
+.googlemap-fallback code{font-size:12px;overflow-wrap:anywhere;background:#dcebe8;padding:2px 4px;border-radius:4px}
+.googlemap-fallback small{color:#6c8586}
+.googlemap-loading{font-size:13px}
+.googlemap-disclaimer{position:absolute;bottom:20px;left:12px;right:12px;margin:auto;width:max-content;max-width:calc(100% - 24px);z-index:2;background:#fff;padding:9px 13px;border-radius:7px;color:#4c6466;font-weight:700;font-size:10px;box-shadow:0 2px 12px #0002;text-align:center;pointer-events:none}
