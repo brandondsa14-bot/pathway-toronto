@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import GoogleStreetMap from "./GoogleStreetMap";
 import RoutePlanner, { type DemoRoute } from "./RoutePlanner";
 import { outdoorLocationById } from "./outdoorLocations";
-import { Search, MapPin, Navigation, Layers, ChevronRight, ExternalLink, Info, Building2, Route, Coffee, Compass } from "lucide-react";
+import { Search, MapPin, Navigation, Layers, ChevronRight, ExternalLink, Info, Building2, Route, Coffee, Compass, Box } from "lucide-react";
+const IndoorExplorer = dynamic(() => import("./three-d/IndoorExplorer"), { ssr: false });
 
 type Place = { id: string; name: string; type: string; x: number; y: number; description: string; url?: string; verified: boolean };
 const places: Place[] = [
@@ -23,7 +25,7 @@ export default function Home() {
   const [selected,setSelected] = useState("rbp");
   const [origin,setOrigin] = useState("union");
   const [activeRoute,setActiveRoute] = useState<DemoRoute|null>(null);
-  const [layer,setLayer] = useState<"path"|"street">("path");
+  const [layer,setLayer] = useState<"path"|"street"|"three">("path");
   const [filter,setFilter] = useState("All");
   const [zoom,setZoom] = useState(1);
   const [mobilePanel,setMobilePanel] = useState<"explore"|"map"|"details">("map");
@@ -49,10 +51,10 @@ export default function Home() {
         <div className="places">{filtered.map(p=><button key={p.id} className={`place ${p.id===selected?"selected":""}`} onClick={()=>selectPlace(p.id)}><span className="placeicon">{p.type.includes("Coffee")?<Coffee size={19}/>:p.type==="Transit"?<Navigation size={19}/>:<Building2 size={19}/>}</span><span className="placetext"><strong>{p.name}</strong><small>{p.type}</small></span><ChevronRight size={17}/></button>)}{filtered.length===0&&<p className="empty">No places match this search.</p>}</div>
       </div><div className="sidefoot"><Info size={16}/><span>Research prototype · indoor marker coordinates and connections are illustrative, not safe for real-world navigation.</span></div>
     </aside>
-    <section className="workspace"><header className="topbar"><span className="crumb">Toronto <ChevronRight size={14}/> Downtown PATH <ChevronRight size={14}/> Explorer</span><div className="topright"><span className="statusdot"/> Day 09 · Route Visualization <span className="avatar">PT</span></div></header>
+    <section className="workspace"><header className="topbar"><span className="crumb">Toronto <ChevronRight size={14}/> Downtown PATH <ChevronRight size={14}/> Explorer</span><div className="topright"><span className="statusdot"/> Day 11 · 3D Foundation <span className="avatar">PT</span></div></header>
       <div className="maparea"><div className="mapheader"><div><div className="eyebrow">DOWNTOWN MAP</div><h2>Financial District <span>↗</span></h2><div className="mapsubtitle"><MapPin size={14}/> Toronto, Ontario</div></div>
-        <div className="layers"><button aria-pressed={layer==="street"} onClick={()=>setLayer("street")} className={layer==="street"?"active":""}><Layers size={16}/> Street view</button><button aria-pressed={layer==="path"} onClick={()=>setLayer("path")} className={layer==="path"?"active":""}><Route size={16}/> PATH layer</button></div>
-      </div><div className="mapcanvas">{layer==="street" ? <GoogleStreetMap selectedId={selected} onSelectPlace={selectPlace}/> : <>
+        <div className="layers"><button aria-pressed={layer==="street"} onClick={()=>setLayer("street")} className={layer==="street"?"active":""}><Layers size={16}/> Street view</button><button aria-pressed={layer==="path"} onClick={()=>setLayer("path")} className={layer==="path"?"active":""}><Route size={16}/> PATH layer</button><button aria-pressed={layer==="three"} onClick={()=>setLayer("three")} className={layer==="three"?"active":""}><Box size={16}/> 3D demo</button></div>
+      </div><div className="mapcanvas">{layer==="street" ? <GoogleStreetMap selectedId={selected} onSelectPlace={selectPlace}/> : layer==="three" ? <IndoorExplorer destinationName={place.name}/> : <>
         <div className="mapgrid"/><div className="street streetone"/><div className="street streettwo"/><div className="street streetthree"/><div className="street streetfour"/><div className="watermark">NOT TO SCALE · DEMONSTRATION GRAPH</div>
         <svg viewBox="0 0 750 570" className="network" aria-label="Illustrative PATH schematic showing synthetic graph routes, not actual walkable corridors" role="img"><g transform={`translate(375 285) scale(${zoom}) translate(-375 -285)`}>
           <g className="blocks"><rect x="230" y="172" width="125" height="110" rx="7"/><rect x="430" y="165" width="130" height="115" rx="7"/><rect x="275" y="295" width="125" height="92" rx="7"/><rect x="425" y="300" width="120" height="90" rx="7"/><rect x="248" y="398" width="155" height="67" rx="7"/></g>

@@ -82,3 +82,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .journey-preferences input{flex:none;accent-color:#0e7772;margin-top:2px}
 .journey-preferences small{font-size:10px;color:#91622a;line-height:1.45}
 .journey-segments{padding-left:20px;margin:12px 0 4px;display:grid;gap:7px;font-size:11px;color:#4c514e}
+
+
+/* Day 11 — React Three Fiber client-only scene */
+.layers{flex-wrap:wrap}
+.indoor-view{position:absolute;inset:0;background:#122d38;overflow:hidden;color:white}
+.indoor-view canvas{display:block;width:100%;height:100%}
+.indoor-banner{position:absolute;top:14px;left:14px;right:14px;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;pointer-events:none;text-shadow:0 1px 2px #0008}
+.indoor-banner strong{background:#fff7;color:#fff;border:1px solid #fff5;border-radius:5px;padding:7px 10px;font-size:12px}
+.indoor-banner span{font-size:11px;color:#e7d2a3;font-weight:700}
+.indoor-hint{position:absolute;bottom:16px;left:12px;right:12px;margin:auto;width:max-content;max-width:calc(100% - 24px);font-size:11px;line-height:1.5;padding:9px 12px;background:#073b47ea;border:1px solid #ffffff30;border-radius:7px;color:#fff;text-align:center;pointer-events:none}

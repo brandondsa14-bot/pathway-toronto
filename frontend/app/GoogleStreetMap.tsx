@@ -71,7 +71,7 @@ export default function GoogleStreetMap({selectedId, onSelectPlace}: Props) {
     return () => {
       cancelled = true;
       window.clearTimeout(timeout);
-      listeners.forEach(listener => listener.remove());
+      listeners.forEach(listener => { if (listener && typeof listener.remove === "function") listener.remove(); });
       markers.forEach(marker => marker.setMap(null));
       markers = []; listeners = [];
       mapRef.current = null;
