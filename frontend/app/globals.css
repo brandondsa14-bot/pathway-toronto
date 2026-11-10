@@ -60,3 +60,16 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .routinglab-entrance{background:white;border:1px solid #e2ebea;border-radius:7px;padding:10px;margin:10px 0}
 .routinglab-entrance p{margin:6px 0!important}.routinglab-entrance span{font-size:10px;color:#977032}
 .routinglab-entrances a{font-size:11px;color:#087c75;text-decoration:underline}
+
+/* Day 09 — usable routing experience; geometry remains illustrative. */
+.journey{margin-top:24px;padding:16px;border:1px solid #d8e8e6;border-radius:12px;background:#fbfefd}
+.journey h3{margin:0 0 9px;font-size:16px;color:#194c53}
+.journey-flag{display:inline-flex;background:#fff1d3;color:#795c1a;padding:6px 8px;font-size:10px;font-weight:800;letter-spacing:.3px;border-radius:5px;margin-bottom:16px}
+.journey .originlabel{display:block}
+.journey .routeinfo p{color:#5a503a;font-weight:700}
+.journey-error{padding:12px;background:#fff0ee;border:1px solid #f4c8c4;color:#9d3932!important;border-radius:8px}
+.journey-access{border-top:1px solid #deebea;margin-top:18px;padding-top:12px}
+.journey-access h4{display:flex;gap:6px;align-items:center;color:#315f63;font-size:12px;margin:4px 0}
+.journey-access p{line-height:1.6}
+.journey-disclaimer{display:flex;gap:8px;color:#775d27!important}
+.route-map-pill{position:absolute;top:55px;left:16px;max-width:calc(100% - 32px);padding:8px 12px;background:#fff9e5;border:1px solid #edd49a;border-radius:8px;box-shadow:0 2px 8px #0001;font-size:11px;font-weight:700;color:#655021;z-index:4}
