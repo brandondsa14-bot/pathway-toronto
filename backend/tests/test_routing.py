@@ -42,3 +42,22 @@ def test_identical_start_end():
 def test_bad_edge_cost_rejected():
     import pytest
     with pytest.raises(ValueError):astar([{'id':'a'},{'id':'b'}],[{'from':'a','to':'b','cost':-1}],'a','b')
+
+
+def test_route_restrictions_return_annotated_segments():
+    result=c.get('/api/v1/route',params={'mode':'demo','start':'union','end':'td','accessible':'true','avoid_floor_changes':'true'})
+    assert result.status_code==200
+    payload=result.json()
+    assert payload['nodes']==['union','rbp','brookfield','commerce','td']
+    assert payload['accessible_filter'] is True
+    assert payload['avoid_floor_changes_filter'] is True
+    assert payload['floor_change_count']==0
+    assert len(payload['segments'])==payload['connection_count']
+    assert all(s['accessible_in_demo'] and not s['floor_change'] for s in payload['segments'])
+
+
+def test_unrestricted_path_describes_demo_stairs():
+    payload=c.get('/api/v1/route',params={'mode':'demo','start':'union','end':'td'}).json()
+    assert payload['floor_change_count']==1
+    assert payload['segments'][-1]['kind']=='stairs'
+    assert payload['segments'][-1]['accessible_in_demo'] is False

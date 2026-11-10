@@ -14,6 +14,10 @@ export type DemoRoute = {
   status: "ILLUSTRATIVE_ONLY";
   mode: "demo";
   disclaimer: string;
+  segments: Array<{start:string;end:string;kind:string;synthetic_cost:number;accessible_in_demo:boolean;floor_change:boolean}>;
+  floor_change_count:number;
+  accessible_filter:boolean;
+  avoid_floor_changes_filter:boolean;
 };
 type Entrance = { id: string; building_id: string; label: string; description: string; source_id: string };
 type EntranceResponse = { entrances: Entrance[] };
@@ -31,6 +35,8 @@ export default function RoutePlanner({ locations, origin, destination, onOriginC
   const [route, setRoute] = useState<DemoRoute | null>(null);
   const [entrances, setEntrances] = useState<Entrance[]>([]);
   const [loading, setLoading] = useState(false);
+  const [accessible, setAccessible] = useState(false);
+  const [avoidFloors, setAvoidFloors] = useState(false);
   const [error, setError] = useState("");
   const request = useRef(0);
 
@@ -52,13 +58,13 @@ export default function RoutePlanner({ locations, origin, destination, onOriginC
     onRouteChange(null);
   // Parent passes an inline callback; only location changes should invalidate the route.
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [origin, destination]);
+  }, [origin, destination, accessible, avoidFloors]);
 
   async function preview() {
     const currentRequest = ++request.current;
     setLoading(true); setError(""); setRoute(null); onRouteChange(null);
     try {
-      const params = new URLSearchParams({ start: origin, end: destination, mode: "demo" });
+      const params = new URLSearchParams({ start: origin, end: destination, mode: "demo", accessible: String(accessible), avoid_floor_changes: String(avoidFloors) });
       const response = await fetch(`${API_BASE}/api/v1/route?${params}`);
       const body = await response.json();
       if (!response.ok) throw Error(typeof body.detail === "string" ? body.detail : "Route unavailable");
@@ -83,6 +89,12 @@ export default function RoutePlanner({ locations, origin, destination, onOriginC
       {locations.filter(p => p.id !== destination).map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
     </select>
     <p className="routehelper">The A* backend calculates the lowest synthetic cost. No real walking time, metre distance, or verified PATH corridor is available.</p>
+    <fieldset className="journey-preferences">
+      <legend>Demo route preferences</legend>
+      <label><input type="checkbox" checked={accessible} onChange={event=>setAccessible(event.target.checked)} /> Exclude demo edges labelled inaccessible</label>
+      <label><input type="checkbox" checked={avoidFloors} onChange={event=>setAvoidFloors(event.target.checked)} /> Avoid demo floor changes</label>
+      <small>These flags belong to a fabricated test graph and DO NOT establish wheelchair accessibility.</small>
+    </fieldset>
     <button type="button" className="primary" onClick={preview} disabled={loading || origin === destination}>
       <Footprints size={18} /> {loading ? "Calculating route…" : "Preview illustrative route"}
     </button>
@@ -90,7 +102,10 @@ export default function RoutePlanner({ locations, origin, destination, onOriginC
     {route && <div className="routeinfo" role="status" aria-live="polite">
       <strong>{route.connection_count ? "Illustrative route highlighted on PATH layer" : "Already at destination"}</strong>
       <p className="journey-path">{route.labels.join(" → ")}</p>
-      <small>{route.connection_count} connections · {route.total_cost} synthetic cost units. <b>Not real distance or time.</b></small>
+      <small>{route.connection_count} connections · {route.total_cost} synthetic cost units · {route.floor_change_count} demo floor transitions. <b>Not real distance or time.</b></small>
+      <ol className="journey-segments">{route.segments.map((segment, i) => <li key={`${segment.start}-${segment.end}-${i}`}>
+        {route.labels[i]} → {route.labels[i+1]} · {segment.kind}{segment.floor_change ? " · demo floor change" : ""}{!segment.accessible_in_demo ? " · demo non-accessible edge" : ""}
+      </li>)}</ol>
     </div>}
     <div className="journey-access"><h4><MapPin size={15}/> Source-described PATH access</h4>
       {access.length ? access.map(item => <p key={item.id}><strong>{item.label}:</strong> {item.description}</p>) : <p>No published entrance description registered for this location.</p>}

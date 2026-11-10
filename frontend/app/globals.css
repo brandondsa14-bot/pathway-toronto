@@ -73,3 +73,12 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .journey-access p{line-height:1.6}
 .journey-disclaimer{display:flex;gap:8px;color:#775d27!important}
 .route-map-pill{position:absolute;top:55px;left:16px;max-width:calc(100% - 32px);padding:8px 12px;background:#fff9e5;border:1px solid #edd49a;border-radius:8px;box-shadow:0 2px 8px #0001;font-size:11px;font-weight:700;color:#655021;z-index:4}
+
+
+/* Day 10 — test graph route preferences, no real accessibility claims */
+.journey-preferences{border:1px solid #d5e4e3;border-radius:9px;margin:13px 0;padding:13px;display:grid;gap:12px}
+.journey-preferences legend{font-size:11px;font-weight:800;color:#326269;padding:0 4px}
+.journey-preferences label{display:flex;gap:9px;font-size:12px;line-height:1.45;color:#244b51;align-items:flex-start}
+.journey-preferences input{flex:none;accent-color:#0e7772;margin-top:2px}
+.journey-preferences small{font-size:10px;color:#91622a;line-height:1.45}
+.journey-segments{padding-left:20px;margin:12px 0 4px;display:grid;gap:7px;font-size:11px;color:#4c514e}
