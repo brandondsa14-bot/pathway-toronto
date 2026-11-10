@@ -1,36 +1,53 @@
-from fastapi import FastAPI, HTTPException
+from __future__ import annotations
+import json
+from pathlib import Path
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from collections import deque
+from .routing import astar
 
-app = FastAPI(title="PATHway Toronto API", version="0.1.0", description="Day 1: explicitly synthetic demonstration routing, NOT verified indoor navigation")
-NODES = {"union":"Union Station", "rbp":"Royal Bank Plaza", "brookfield":"Brookfield Place", "td":"Toronto-Dominion Centre", "commerce":"Commerce Court", "mos":"Mos Mos Coffee"}
-EDGES = [("union","rbp"),("rbp","brookfield"),("rbp","td"),("brookfield","commerce"),("rbp","mos")]
+DATA_DIR = Path(__file__).resolve().parents[2] / 'data' / 'geographic'
+DEMO = json.loads((DATA_DIR / 'demo_graph.json').read_text(encoding='utf8'))
+VERIFIED = json.loads((DATA_DIR / 'verified_entrances.json').read_text(encoding='utf8'))
+app = FastAPI(title='PATHway Toronto API',version='0.4.0',description='Provenance-aware routing prototype. Verified indoor edges are NOT available.')
+app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:3000','http://localhost:3001','http://127.0.0.1:3000','http://127.0.0.1:3001'],allow_credentials=False,allow_methods=['GET'],allow_headers=['*'])
 
 class RouteResponse(BaseModel):
     nodes:list[str]
     labels:list[str]
     connection_count:int
-    status:str="ILLUSTRATIVE_ONLY"
+    total_cost:float | None = None
+    cost_unit:str | None = None
+    status:str
+    mode:str
+    disclaimer:str
 
 @app.get('/health')
-def health():return {"status":"ok","project":"PATHway Toronto","milestone":"day-01"}
+def health():return {'status':'ok','project':'PATHway Toronto','milestone':'accelerated-day-1-original-4-8','data_mode':'verified-entrances + synthetic-routing'}
 
+@app.get('/api/v1/network')
+def network(mode: str=Query('verified',pattern='^(verified|demo)$')):
+    if mode=='demo':return DEMO
+    return VERIFIED
+
+@app.get('/api/v1/entrances')
+def entrances():return {'entrances':VERIFIED['entrances'],'sources':VERIFIED['sources'],'verified_corridor_edges':[],'status':'SOURCE_DESCRIPTIONS_ONLY'}
+
+@app.get('/api/v1/route', response_model=RouteResponse)
+def route_v1(start:str,end:str, mode:str=Query('verified',pattern='^(verified|demo)$'),accessible:bool=False,avoid_floor_changes:bool=False):
+    if mode=='verified':
+        raise HTTPException(status_code=422,detail='Verified indoor corridor graph is not available. No real-world route can be calculated.')
+    ids={n['id'] for n in DEMO['nodes']}
+    if start not in ids or end not in ids:
+        raise HTTPException(status_code=404,detail='Unknown demonstration node')
+    path=astar(DEMO['nodes'],DEMO['edges'],start,end,accessible,avoid_floor_changes)
+    if not path:raise HTTPException(status_code=404,detail='No connection in the synthetic graph with these restrictions')
+    labels={n['id']:n['label'] for n in DEMO['nodes']}
+    return RouteResponse(nodes=path.nodes,labels=[labels[x] for x in path.nodes],connection_count=path.edge_count,total_cost=path.total_cost,cost_unit='synthetic_units',status='ILLUSTRATIVE_ONLY',mode='demo',disclaimer='NOT FOR NAVIGATION. Demo topology and weighted costs are fabricated to test the algorithm.')
+
+# Legacy endpoints: retained for compatibility with the Day 1 prototype.
 @app.get('/api/places')
-def places():return {"places":[{"id":k,"name":v,"position_verification":"NOT_VERIFIED"} for k,v in NODES.items()],"status":"ILLUSTRATIVE_ONLY"}
+def places():return {'places':[{'id':n['id'],'name':n['label'],'position_verification':'NOT_VERIFIED'} for n in DEMO['nodes']],'status':'ILLUSTRATIVE_ONLY'}
 
 @app.get('/api/route',response_model=RouteResponse)
-def route(start:str,end:str):
-    if start not in NODES or end not in NODES:raise HTTPException(status_code=404,detail="Unknown demo node")
-    graph={n:[] for n in NODES}
-    for a,b in EDGES:graph[a].append(b);graph[b].append(a)
-    pending=deque([start]);parent={start:None}
-    while pending:
-        node=pending.popleft()
-        if node==end:break
-        for dest in graph[node]:
-            if dest not in parent:parent[dest]=node;pending.append(dest)
-    if end not in parent:raise HTTPException(status_code=404,detail="No demo connection")
-    path=[];p=end
-    while p is not None:path.append(p);p=parent[p]
-    path.reverse()
-    return RouteResponse(nodes=path,labels=[NODES[x] for x in path],connection_count=len(path)-1)
+def legacy_route(start:str,end:str):return route_v1(start,end,'demo')

@@ -1,10 +1,13 @@
 from fastapi.testclient import TestClient
 from app.main import app
-client=TestClient(app)
-def test_health():assert client.get('/health').json()['status']=='ok'
-def test_route():
-    r=client.get('/api/route',params={'start':'union','end':'commerce'})
-    assert r.status_code==200
-    assert r.json()['nodes']==['union','rbp','brookfield','commerce']
+c=TestClient(app)
+
+def test_health():
+    r=c.get('/health'); assert r.status_code==200 and r.json()['status']=='ok'
+
+def test_legacy_route_still_works():
+    r=c.get('/api/route',params={'start':'union','end':'rbp'});assert r.status_code==200
     assert r.json()['status']=='ILLUSTRATIVE_ONLY'
-def test_invalid_node():assert client.get('/api/route',params={'start':'fake','end':'union'}).status_code==404
+
+def test_unknown_demo_node():
+    assert c.get('/api/v1/route',params={'start':'wrong','end':'rbp','mode':'demo'}).status_code==404

@@ -1,0 +1,80 @@
+{
+  "dataset": "pathway-entrances-2026-11-09",
+  "status": "SOURCE_DESCRIPTIONS_ONLY",
+  "description": "Source-described access points only. No verified indoor geometry, coordinate, connection distance, or accessible route is asserted.",
+  "sources": [
+    {
+      "id": "ttc-union",
+      "publisher": "Toronto Transit Commission",
+      "title": "Union Station \u2013 entrances and Bay Street PATH",
+      "url": "https://www.ttc.ca/subway-stations/Union-station",
+      "accessed_on": "2026-11-09"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "union",
+      "name": "Union Station",
+      "type": "transit"
+    },
+    {
+      "id": "rbp",
+      "name": "Royal Bank Plaza",
+      "type": "building"
+    },
+    {
+      "id": "brookfield",
+      "name": "Brookfield Place",
+      "type": "building"
+    },
+    {
+      "id": "td",
+      "name": "Toronto-Dominion Centre",
+      "type": "building"
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce Court",
+      "type": "building"
+    }
+  ],
+  "entrances": [
+    {
+      "id": "rbp_bay",
+      "building_id": "rbp",
+      "label": "200 Bay Street PATH access",
+      "description": "West side of Bay Street, about 15 metres north of Front Street West; within Royal Bank Plaza. TTC lists elevator, escalator and stair access to PATH, but does not certify an end-to-end accessible route.",
+      "source_id": "ttc-union",
+      "verification": "SOURCE_DESCRIBED",
+      "coordinate": null
+    },
+    {
+      "id": "brookfield_bay",
+      "building_id": "brookfield",
+      "label": "181 Bay Street PATH access",
+      "description": "East side of Bay Street, about 30 metres north of Front Street West; within Brookfield Place. TTC lists elevator, escalator and stair access to PATH, but does not certify an end-to-end accessible route.",
+      "source_id": "ttc-union",
+      "verification": "SOURCE_DESCRIBED",
+      "coordinate": null
+    },
+    {
+      "id": "union_moat",
+      "building_id": "union",
+      "label": "Union Station Moat Entrance",
+      "description": "TTC lists an accessible Moat Entrance near Front Street West and Bay Street. No precise indoor path polyline captured.",
+      "source_id": "ttc-union",
+      "verification": "SOURCE_DESCRIBED",
+      "coordinate": null
+    },
+    {
+      "id": "union_front_bay",
+      "building_id": "union",
+      "label": "Front & Bay Entrance",
+      "description": "TTC lists a sidewalk staircase on the south side of Front Street West, west of Bay Street, leading to concourse level.",
+      "source_id": "ttc-union",
+      "verification": "SOURCE_DESCRIBED",
+      "coordinate": null
+    }
+  ],
+  "verified_corridor_edges": []
+}

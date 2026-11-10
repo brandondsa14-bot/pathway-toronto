@@ -38,3 +38,25 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .googlemap-fallback small{color:#6c8586}
 .googlemap-loading{font-size:13px}
 .googlemap-disclaimer{position:absolute;bottom:20px;left:12px;right:12px;margin:auto;width:max-content;max-width:calc(100% - 24px);z-index:2;background:#fff;padding:9px 13px;border-radius:7px;color:#4c6466;font-weight:700;font-size:10px;box-shadow:0 2px 12px #0002;text-align:center;pointer-events:none}
+
+/* Day 04: address provenance and marker disclosure */
+.outdoor-source{display:inline-flex;gap:5px;align-items:center;margin-top:9px;color:#087b75;font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.outdoor-source:hover{color:#0a5253}
+
+/* Accelerated day 1: provenance-aware routing UI */
+.routinglab{margin-top:22px;padding:15px;background:#f7faf9;border:1px solid #d5e6e2;border-radius:12px;font-size:12px;color:#36575b}
+.routinglab-header{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.routinglab h3{font-size:15px;margin:0}.routinglab h4{font-size:12px;margin:9px 0}
+.routinglab-tag{font-weight:800;font-size:9px;letter-spacing:.5px;border-radius:4px;padding:5px;background:#fff0d0;color:#7d590d}
+.routinglab-state{font-weight:700!important;color:#397a78!important}
+.routinglab-option{display:flex;gap:8px;align-items:flex-start;margin:12px 0;line-height:1.5;cursor:pointer}
+.routinglab-option input{margin-top:2px;accent-color:#127d79}
+.routinglab-button{border:0;border-radius:8px;padding:11px;background:#15545b;color:white;font-weight:700;width:100%;margin-top:4px;cursor:pointer}
+.routinglab-button:disabled{opacity:.55;cursor:wait}
+.routinglab-result{padding:10px;background:#e3f5eb;border:1px solid #bbe5d1;margin-top:12px;border-radius:6px;overflow-wrap:anywhere;display:grid;gap:6px}
+.routinglab-result span,.routinglab-result small{font-size:11px}
+.routinglab-error{color:#ae3027!important;font-weight:700}
+.routinglab-entrances{border-top:1px solid #dae7e3;padding-top:10px;margin-top:16px}
+.routinglab-entrance{background:white;border:1px solid #e2ebea;border-radius:7px;padding:10px;margin:10px 0}
+.routinglab-entrance p{margin:6px 0!important}.routinglab-entrance span{font-size:10px;color:#977032}
+.routinglab-entrances a{font-size:11px;color:#087c75;text-decoration:underline}

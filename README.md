@@ -52,3 +52,8 @@ Read [30-day milestones](docs/30_DAY_PLAN.md) and [architecture/provenance](docs
 - Royal Bank Plaza building description: https://royalbankplaza.com/building-info
 
 No external photos, maps, logos or copyrighted floor plans are bundled. Current illustration is original CSS/SVG and should not be confused with a genuine PATH floor plan.
+
+
+## Accelerated Session 1 (original Days 4–8)
+
+A provenance-aware entrance dataset, an optional PostGIS schema and a synthetic A* routing demonstration are available. **The synthetic route results are not real-world directions.** See [`docs/ACCELERATED_DAY_01_ORIGINAL_04_08.md`](docs/ACCELERATED_DAY_01_ORIGINAL_04_08.md).

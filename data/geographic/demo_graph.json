@@ -1,0 +1,99 @@
+{
+  "dataset": "synthetic-demo-v1",
+  "status": "ILLUSTRATIVE_ONLY",
+  "description": "Synthetic topology and costs; zero real PATH route claims",
+  "nodes": [
+    {
+      "id": "union",
+      "label": "Union Station",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "rbp",
+      "label": "Royal Bank Plaza",
+      "x": 1,
+      "y": 0
+    },
+    {
+      "id": "brookfield",
+      "label": "Brookfield Place",
+      "x": 2,
+      "y": 0
+    },
+    {
+      "id": "td",
+      "label": "Toronto-Dominion Centre",
+      "x": 1,
+      "y": 1
+    },
+    {
+      "id": "commerce",
+      "label": "Commerce Court",
+      "x": 3,
+      "y": 0
+    },
+    {
+      "id": "mos",
+      "label": "Mos Mos Coffee (illustrative node)",
+      "x": 2,
+      "y": 1
+    }
+  ],
+  "edges": [
+    {
+      "from": "union",
+      "to": "rbp",
+      "cost": 120,
+      "kind": "corridor",
+      "accessible": true,
+      "floor_change": false,
+      "source": "SYNTHETIC_TEST_DATA"
+    },
+    {
+      "from": "rbp",
+      "to": "brookfield",
+      "cost": 100,
+      "kind": "corridor",
+      "accessible": true,
+      "floor_change": false,
+      "source": "SYNTHETIC_TEST_DATA"
+    },
+    {
+      "from": "rbp",
+      "to": "td",
+      "cost": 140,
+      "kind": "stairs",
+      "accessible": false,
+      "floor_change": true,
+      "source": "SYNTHETIC_TEST_DATA"
+    },
+    {
+      "from": "brookfield",
+      "to": "commerce",
+      "cost": 130,
+      "kind": "corridor",
+      "accessible": true,
+      "floor_change": false,
+      "source": "SYNTHETIC_TEST_DATA"
+    },
+    {
+      "from": "rbp",
+      "to": "mos",
+      "cost": 60,
+      "kind": "corridor",
+      "accessible": true,
+      "floor_change": false,
+      "source": "SYNTHETIC_TEST_DATA"
+    },
+    {
+      "from": "td",
+      "to": "commerce",
+      "cost": 100,
+      "kind": "corridor",
+      "accessible": true,
+      "floor_change": false,
+      "source": "SYNTHETIC_TEST_DATA"
+    }
+  ]
+}
