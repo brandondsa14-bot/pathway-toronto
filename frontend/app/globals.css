@@ -92,3 +92,17 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .indoor-banner strong{background:#fff7;color:#fff;border:1px solid #fff5;border-radius:5px;padding:7px 10px;font-size:12px}
 .indoor-banner span{font-size:11px;color:#e7d2a3;font-weight:700}
 .indoor-hint{position:absolute;bottom:16px;left:12px;right:12px;margin:auto;width:max-content;max-width:calc(100% - 24px);font-size:11px;line-height:1.5;padding:9px 12px;background:#073b47ea;border:1px solid #ffffff30;border-radius:7px;color:#fff;text-align:center;pointer-events:none}
+
+/* Day 13 — simple bounded first-person movement, touch controls, 2D fallback stays available */
+.indoor-canvas{position:absolute;inset:0;touch-action:none;cursor:grab}
+.indoor-canvas:active{cursor:grabbing}
+.indoor-reticle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:26px;color:#e8fffa99;pointer-events:none;text-shadow:0 0 6px #053d43}
+.indoor-help{position:absolute;left:12px;right:12px;top:63px;max-width:420px;z-index:2;font-size:11px;line-height:1.55;color:#fff;background:#063c46d9;border:1px solid #ffffff38;border-radius:7px;padding:9px 12px;pointer-events:none}
+.indoor-pad{position:absolute;right:14px;bottom:60px;z-index:4;display:flex;flex-direction:column;gap:5px;align-items:center;user-select:none}
+.indoor-pad-row{display:flex;gap:5px}
+.indoor-pad button{min-width:42px;height:42px;border-radius:8px;background:#0a5056db;border:1px solid #d4ffff77;color:#fff;font-size:16px;font-weight:800;touch-action:none;cursor:pointer}
+.indoor-pad button:hover{background:#177a7f}
+.indoor-pad button:focus-visible{outline:3px solid #f5bd56;outline-offset:2px}
+.indoor-pad button[aria-label="Reset camera position"]{padding:0 9px;font-size:11px}
+.indoor-view .indoor-hint{display:none}
+@media(max-width:760px){.indoor-help{font-size:10px;max-width:calc(100% - 24px)}.indoor-pad{bottom:45px}.indoor-pad button{min-width:45px;min-height:45px}}
