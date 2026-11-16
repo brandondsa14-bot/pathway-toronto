@@ -106,3 +106,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .indoor-pad button[aria-label="Reset camera position"]{padding:0 9px;font-size:11px}
 .indoor-view .indoor-hint{display:none}
 @media(max-width:760px){.indoor-help{font-size:10px;max-width:calc(100% - 24px)}.indoor-pad{bottom:45px}.indoor-pad button{min-width:45px;min-height:45px}}
+
+/* Day 14 — camera perspective and simulated position mini-map */
+.indoor-view-switch{position:absolute;z-index:5;top:128px;right:12px;display:flex;gap:5px}
+.indoor-view-switch button{background:#073b48ed;color:white;border:1px solid #ffffff72;border-radius:7px;padding:8px 10px;font-size:11px;cursor:pointer}
+.indoor-view-switch button[aria-pressed="true"]{background:#dda044;color:#102d35;font-weight:800}
+.indoor-minimap{position:absolute;z-index:4;left:12px;bottom:15px;width:126px;padding:7px;background:#092d3fe8;border:1px solid #ffffff50;border-radius:9px;display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none}
+.indoor-minimap strong{font-size:10px}
+.indoor-minimap svg{height:136px;width:90px}
+.indoor-minimap small{font-size:9px;color:#d1e7e5;text-align:center;line-height:1.35}
+@media(max-width:760px){.indoor-view-switch{top:120px;left:12px;right:auto}.indoor-minimap{bottom:10px;width:106px}.indoor-minimap svg{height:100px}.indoor-help{top:64px}}
