@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import GoogleStreetMap from "./GoogleStreetMap";
 import RoutePlanner, { type DemoRoute } from "./RoutePlanner";
+import StoreDirectory from "./stores/StoreDirectory";
 import { outdoorLocationById } from "./outdoorLocations";
 import { Search, MapPin, Navigation, Layers, ChevronRight, ExternalLink, Info, Building2, Route, Coffee, Compass, Box } from "lucide-react";
 const IndoorExplorer = dynamic(() => import("./three-d/IndoorExplorer"), { ssr: false });
@@ -28,6 +29,7 @@ export default function Home() {
   const [layer,setLayer] = useState<"path"|"street"|"three">("path");
   const [filter,setFilter] = useState("All");
   const [zoom,setZoom] = useState(1);
+  const [selectedStoreId,setSelectedStoreId] = useState<string|null>(null);
   const [mobilePanel,setMobilePanel] = useState<"explore"|"map"|"details">("map");
 
   const place = places.find(p => p.id===selected)!;
@@ -76,6 +78,7 @@ export default function Home() {
         {outdoorPlace&&<><div className="fact"><span>Official address</span><strong>{outdoorPlace.address}</strong></div><a className="outdoor-source" href={outdoorPlace.sourceUrl} target="_blank" rel="noopener noreferrer">View address source <ExternalLink size={13}/></a><div className="fact"><span>Outdoor map marker</span><strong>Approximate building position, not a PATH entrance</strong></div></>}
         <div className="fact"><span>Location data</span><strong>{place.verified?"Business listed in official directory":"Illustrative marker"}</strong></div><div className="fact"><span>Exact interior geometry</span><strong>Not yet verified</strong></div>
         <RoutePlanner locations={places} origin={origin} destination={selected} onOriginChange={updateOrigin} onRouteChange={setActiveRoute}/>
+        <StoreDirectory selectedStoreId={selectedStoreId} onSelectStore={setSelectedStoreId}/>
         {place.url&&<a className="external" href={place.url} target="_blank" rel="noopener noreferrer">View official building directory <ExternalLink size={16}/></a>}
         <div className="notice"><Info size={16}/><span>Verified indoor route geometry and a spatially accurate 3D reconstruction are not yet available. Do not use this demonstration for navigation.</span></div>
       </div>

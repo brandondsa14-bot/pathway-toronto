@@ -125,3 +125,21 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .indoor-context small{font-size:9px;color:#d3e5e6}
 .indoor-context button{padding:8px;border:1px solid #bee2da;background:#1c777c;color:white;border-radius:7px;cursor:pointer}
 @media(max-width:760px){.indoor-context{right:8px;bottom:168px;width:min(205px,calc(100% - 125px));padding:8px}.indoor-context p{max-height:50px}}
+
+/* Day 16 — source-backed business discovery */
+.store-directory{background:#f7fbfa;border:1px solid #d5e8e4;border-radius:12px;padding:16px;margin-top:22px;display:grid;gap:12px}
+.store-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.store-heading h3{font-size:16px;margin:0;color:#174e54}.store-heading small{font-size:10px;color:#597c80}
+.store-directory p{margin:0!important;font-size:12px!important;color:#536e73!important;line-height:1.5}
+.store-search{display:grid;gap:5px;font-size:11px;font-weight:700;color:#2d5b61}
+.store-search input{padding:11px;background:white;border:1px solid #cadfdd;border-radius:7px;font-size:13px;min-width:0}
+.store-filters{display:flex;gap:5px;flex-wrap:wrap}
+.store-filters button{font-size:10px;border:1px solid #bad8d1;border-radius:14px;background:white;padding:6px 9px;color:#245359;cursor:pointer}
+.store-filters button[aria-pressed="true"]{background:#14565e;color:white}
+.store-results{display:grid;gap:6px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.store-result{text-align:left;display:grid;gap:5px;border:1px solid #d5e6e4;border-radius:8px;background:white;padding:10px;color:#1c4b52;cursor:pointer}
+.store-result strong{font-size:12px}.store-result small{font-size:10px;color:#708789}
+.store-result[aria-pressed="true"]{border-color:#138c83;background:#e4f4ee}
+.store-summary{padding:11px;background:#ecf7f3;border:1px solid #c1dfd5;border-radius:8px;display:grid;gap:6px;font-size:11px;color:#254f55}
+.store-summary small{font-size:10px;color:#547577;line-height:1.45}
+.store-summary a{color:#007a72;font-size:11px;font-weight:700}
