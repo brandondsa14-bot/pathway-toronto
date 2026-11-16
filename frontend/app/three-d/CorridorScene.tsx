@@ -1,5 +1,7 @@
 "use client";
 
+import Storefronts from "./Storefronts";
+
 /** Dimensions are arbitrary demonstration units, not Toronto PATH measurements. */
 export const DEMO_CORRIDOR = { halfWidth: 2.5, halfLength: 17, cameraHeight: 1.65, wallHeight: 3.3 } as const;
 
@@ -28,7 +30,7 @@ function Wall({side}:{side:-1|1}) {
 }
 
 /** Reusable corridor components, intentionally fictional. */
-export default function CorridorScene() {
+export default function CorridorScene({ onSelectStore, selectedStoreId }: { onSelectStore: (id: string) => void; selectedStoreId: string | null }) {
   return <group>
     <color attach="background" args={["#152f38"]}/>
     <fog attach="fog" args={["#152f38",13,43]}/>
@@ -45,6 +47,7 @@ export default function CorridorScene() {
       <boxGeometry args={[5.18,0.18,34]}/><meshStandardMaterial color="#607a7e" roughness={0.87}/>
     </mesh>
     <Wall side={-1}/><Wall side={1}/>
+    <Storefronts onSelectStore={onSelectStore} selectedStoreId={selectedStoreId} />
     {[-17,17].map(z=><mesh key={z} position={[0,1.65,z]}>
       <boxGeometry args={[5,3.3,0.2]}/><meshStandardMaterial color="#566f72" roughness={0.83}/>
     </mesh>)}

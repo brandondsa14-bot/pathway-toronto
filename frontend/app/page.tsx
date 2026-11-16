@@ -61,7 +61,8 @@ export default function Home() {
           originName={places.find(item => item.id === origin)?.name || "Unknown"}
           routeLabels={activeRoute?.labels ?? null}
           onSelectDestination={id => { setSelected(id); setActiveRoute(null); }}
-          onReturnToPath={() => setLayer("path")}/> : <>
+          onReturnToPath={() => setLayer("path")}
+          selectedStoreId={selectedStoreId} onSelectStore={id => setSelectedStoreId(id || null)}/> : <>
         <div className="mapgrid"/><div className="street streetone"/><div className="street streettwo"/><div className="street streetthree"/><div className="street streetfour"/><div className="watermark">NOT TO SCALE · DEMONSTRATION GRAPH</div>
         <svg viewBox="0 0 750 570" className="network" aria-label="Illustrative PATH schematic showing synthetic graph routes, not actual walkable corridors" role="img"><g transform={`translate(375 285) scale(${zoom}) translate(-375 -285)`}>
           <g className="blocks"><rect x="230" y="172" width="125" height="110" rx="7"/><rect x="430" y="165" width="130" height="115" rx="7"/><rect x="275" y="295" width="125" height="92" rx="7"/><rect x="425" y="300" width="120" height="90" rx="7"/><rect x="248" y="398" width="155" height="67" rx="7"/></g>

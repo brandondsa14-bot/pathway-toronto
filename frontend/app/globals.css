@@ -143,3 +143,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .store-summary{padding:11px;background:#ecf7f3;border:1px solid #c1dfd5;border-radius:8px;display:grid;gap:6px;font-size:11px;color:#254f55}
 .store-summary small{font-size:10px;color:#547577;line-height:1.45}
 .store-summary a{color:#007a72;font-size:11px;font-weight:700}
+
+/* Day 17 — clickable demonstration storefronts inside the fictional scene */
+.storefront-label{background:#e6f3f1;border:2px solid #168982;border-radius:7px;padding:7px 9px;min-width:120px;max-width:170px;color:#15454b;box-shadow:0 2px 16px #0006;cursor:pointer;display:grid;gap:3px;text-align:center}
+.storefront-label strong{font-size:12px}.storefront-label small{font-size:9px;color:#5b7779}
+.storefront-label:hover,.storefront-label[aria-pressed="true"]{background:#ffecc1;border-color:#cf8b23}
+.storefront-label:focus-visible{outline:3px solid #ffb54e;outline-offset:2px}
+.indoor-store-card{position:absolute;z-index:6;left:150px;bottom:16px;max-width:calc(100% - 310px);width:270px;padding:10px;background:#103c49ed;border:1px solid #f5d18b;border-radius:9px;display:grid;gap:5px;font-size:11px;line-height:1.45}
+.indoor-store-card strong{font-size:13px;color:#ffe4a0}.indoor-store-card small{font-size:10px;color:#d0e7e3}
+.indoor-store-card button{background:#fff;color:#22515a;padding:6px;border:0;border-radius:6px;cursor:pointer}
+@media(max-width:760px){.indoor-store-card{left:120px;bottom:12px;max-width:calc(100% - 145px);width:200px}.storefront-label{min-width:110px}}

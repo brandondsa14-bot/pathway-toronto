@@ -3,6 +3,7 @@
 import { Suspense, useCallback, useEffect, useRef, useState, type PointerEvent, type RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import CorridorScene, { DEMO_CORRIDOR } from "./CorridorScene";
+import { findStore } from "../stores/storeCatalog";
 
 type Direction = "forward" | "back" | "left" | "right" | "turnLeft" | "turnRight";
 type ViewMode = "first-person" | "overhead";
@@ -90,15 +91,18 @@ type SharedNavigation = {
   routeLabels: string[] | null;
   onSelectDestination: (id: string) => void;
   onReturnToPath: () => void;
+  selectedStoreId: string | null;
+  onSelectStore: (id: string) => void;
 };
 
-export default function IndoorExplorer({ destinationName, destinationId, destinations, originName, routeLabels, onSelectDestination, onReturnToPath }: SharedNavigation) {
+export default function IndoorExplorer({ destinationName, destinationId, destinations, originName, routeLabels, onSelectDestination, onReturnToPath, selectedStoreId, onSelectStore }: SharedNavigation) {
   const held = useRef(new Set<Direction>());
   const impulse = useRef<Direction[]>([]);
   const rotation = useRef({ yaw: 0, pitch: 0 });
   const dragging = useRef(false);
   const last = useRef({ x: 0, y: 0 });
   const [reset, setReset] = useState(0);
+  const selectedStore = findStore(selectedStoreId);
   const [viewMode, setViewMode] = useState<ViewMode>("first-person");
   const [pose, setPose] = useState<Pose>({ x: 0, z: 13, yaw: 0 });
   const updatePose = useCallback((next: Pose) => setPose(next), []);
@@ -142,7 +146,7 @@ export default function IndoorExplorer({ destinationName, destinationId, destina
     <div className="indoor-banner"><strong>3D corridor sandbox</strong><span>Fictional, unsurveyed environment · NOT an actual PATH route</span></div>
     <div className="indoor-canvas" onPointerDown={begin} onPointerMove={move} onPointerUp={stop} onPointerCancel={stop}>
       <Canvas camera={{ position: [0, DEMO_CORRIDOR.cameraHeight, 13], fov: 76, near: 0.05, far: 70 }} dpr={[1, 1.75]} gl={{ antialias: true }}>
-        <Suspense fallback={null}><CorridorScene /><WalkController held={held} impulse={impulse} rotation={rotation} reset={reset} viewMode={viewMode} onPoseChange={updatePose} /></Suspense>
+        <Suspense fallback={null}><CorridorScene selectedStoreId={selectedStoreId} onSelectStore={onSelectStore}/><WalkController held={held} impulse={impulse} rotation={rotation} reset={reset} viewMode={viewMode} onPoseChange={updatePose} /></Suspense>
       </Canvas>
     </div>
     <div className="indoor-reticle" aria-hidden="true">+</div>
@@ -152,6 +156,13 @@ export default function IndoorExplorer({ destinationName, destinationId, destina
       <button aria-pressed={viewMode === "overhead"} onClick={() => setViewMode("overhead")}>Overhead</button>
     </div>
     <MiniMap pose={pose} />
+    {selectedStore && <div className="indoor-store-card" role="status">
+      <strong>{selectedStore.name}</strong>
+      <span>{selectedStore.category} · {selectedStore.buildingName}</span>
+      <small>{selectedStore.concourse}</small>
+      <small>Storefront placement in this 3D scene is illustrative, not mapped to an actual entrance.</small>
+      <button type="button" onClick={() => onSelectStore("")}>Close store details</button>
+    </div>}
     <section className="indoor-context" aria-label="Shared navigation state">
       <strong>Navigation selection</strong>
       <label htmlFor="indoor-destination">Destination</label>
