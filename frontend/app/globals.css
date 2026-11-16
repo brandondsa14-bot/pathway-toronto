@@ -116,3 +116,12 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .indoor-minimap svg{height:136px;width:90px}
 .indoor-minimap small{font-size:9px;color:#d1e7e5;text-align:center;line-height:1.35}
 @media(max-width:760px){.indoor-view-switch{top:120px;left:12px;right:auto}.indoor-minimap{bottom:10px;width:106px}.indoor-minimap svg{height:100px}.indoor-help{top:64px}}
+
+/* Day 15 — preserve destination and demo route labels between 2D and 3D */
+.indoor-context{position:absolute;right:12px;bottom:170px;z-index:5;width:min(244px,calc(100% - 145px));background:#082f3de8;color:white;border:1px solid #ffffff55;border-radius:10px;padding:11px;display:grid;gap:7px;font-size:11px;line-height:1.45}
+.indoor-context strong{font-size:12px}.indoor-context label{font-size:10px;color:#c8e4e2}
+.indoor-context select{width:100%;color:#193d42;background:#fff;border-radius:6px;padding:7px;min-width:0}
+.indoor-context p{font-size:10px;margin:0;max-height:75px;overflow:auto;color:#e4f3ef}
+.indoor-context small{font-size:9px;color:#d3e5e6}
+.indoor-context button{padding:8px;border:1px solid #bee2da;background:#1c777c;color:white;border-radius:7px;cursor:pointer}
+@media(max-width:760px){.indoor-context{right:8px;bottom:168px;width:min(205px,calc(100% - 125px));padding:8px}.indoor-context p{max-height:50px}}

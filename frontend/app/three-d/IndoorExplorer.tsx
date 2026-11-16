@@ -82,7 +82,17 @@ function MiniMap({ pose }: { pose: Pose }) {
   </aside>;
 }
 
-export default function IndoorExplorer({ destinationName }: { destinationName: string }) {
+type SharedNavigation = {
+  destinationName: string;
+  destinationId: string;
+  destinations: Array<{ id: string; name: string }>;
+  originName: string;
+  routeLabels: string[] | null;
+  onSelectDestination: (id: string) => void;
+  onReturnToPath: () => void;
+};
+
+export default function IndoorExplorer({ destinationName, destinationId, destinations, originName, routeLabels, onSelectDestination, onReturnToPath }: SharedNavigation) {
   const held = useRef(new Set<Direction>());
   const impulse = useRef<Direction[]>([]);
   const rotation = useRef({ yaw: 0, pitch: 0 });
@@ -142,6 +152,17 @@ export default function IndoorExplorer({ destinationName }: { destinationName: s
       <button aria-pressed={viewMode === "overhead"} onClick={() => setViewMode("overhead")}>Overhead</button>
     </div>
     <MiniMap pose={pose} />
+    <section className="indoor-context" aria-label="Shared navigation state">
+      <strong>Navigation selection</strong>
+      <label htmlFor="indoor-destination">Destination</label>
+      <select id="indoor-destination" value={destinationId} onChange={event => onSelectDestination(event.target.value)}>
+        {destinations.map(place => <option value={place.id} key={place.id}>{place.name}</option>)}
+      </select>
+      <small>From: {originName}</small>
+      {routeLabels ? <p>2D demo route: {routeLabels.join(" → ")}</p> : <p>No demo route selected. Preview a route on the PATH schematic.</p>}
+      <button type="button" onClick={onReturnToPath}>Return to PATH layer</button>
+      <small>No indoor route is positioned in 3D; labels are shared only.</small>
+    </section>
     <div className="indoor-pad" aria-label="Touch and keyboard navigation buttons">
       {controlButton("forward", "↑")}
       <div className="indoor-pad-row">{controlButton("left", "←")}{controlButton("back", "↓")}{controlButton("right", "→")}</div>
