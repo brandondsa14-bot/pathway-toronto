@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState, type PointerEvent, 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import CorridorScene, { DEMO_CORRIDOR } from "./CorridorScene";
 import { findStore } from "../stores/storeCatalog";
+import StoreActions from "../stores/StoreActions";
 
 type Direction = "forward" | "back" | "left" | "right" | "turnLeft" | "turnRight";
 type ViewMode = "first-person" | "overhead";
@@ -160,7 +161,8 @@ export default function IndoorExplorer({ destinationName, destinationId, destina
       <strong>{selectedStore.name}</strong>
       <span>{selectedStore.category} · {selectedStore.buildingName}</span>
       <small>{selectedStore.concourse}</small>
-      <small>Storefront placement in this 3D scene is illustrative, not mapped to an actual entrance.</small>
+      <small>Directory checked {selectedStore.verifiedOn}. 3D placement is fictional; not an entrance.</small>
+      <StoreActions store={selectedStore} />
       <button type="button" onClick={() => onSelectStore("")}>Close store details</button>
     </div>}
     <section className="indoor-context" aria-label="Shared navigation state">

@@ -29,14 +29,14 @@ export const VERIFIED_STORES: VerifiedStore[] = [
     buildingName: "Royal Bank Plaza", concourse: "200 Bay Street, lower concourse (directory description)",
     hoursNote: "Weekdays 6 AM–5:30 PM; weekends closed (directory listing; check before visiting)",
     sourceUrl: "https://royalbankplaza.com/shop/tim-hortons",
-    websiteUrl: "https://www.timhortons.ca/", verifiedOn: "2026-11-16", locationVerified: false
+    websiteUrl: "https://www.timhortons.ca/", menuUrl: "https://www.timhortons.ca/menu", verifiedOn: "2026-11-16", locationVerified: false
   },
   {
     id: "starbucks-rbp", name: "Starbucks", category: "Coffee & cafés", buildingId: "rbp",
     buildingName: "Royal Bank Plaza", concourse: "Listed in building retail directory; precise unit unverified",
     hoursNote: "Hours listed on the building directory; confirm before visiting",
     sourceUrl: "https://royalbankplaza.com/shop/starbucks",
-    websiteUrl: "https://www.starbucks.ca/", verifiedOn: "2026-11-16", locationVerified: false
+    websiteUrl: "https://www.starbucks.ca/", menuUrl: "https://www.starbucks.ca/menu", verifiedOn: "2026-11-16", locationVerified: false
   },
   {
     id: "wendys-rbp", name: "Wendy’s", category: "Fast food", buildingId: "rbp",

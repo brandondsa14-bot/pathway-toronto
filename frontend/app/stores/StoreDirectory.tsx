@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { VERIFIED_STORES, findStore } from "./storeCatalog";
+import StoreActions from "./StoreActions";
 
 type Props = { selectedStoreId: string | null; onSelectStore: (id: string) => void };
 
@@ -33,8 +34,8 @@ export default function StoreDirectory({ selectedStoreId, onSelectStore }: Props
       <strong>{selectedStore.name}</strong><span>{selectedStore.concourse}</span>
       <small>{selectedStore.hoursNote}</small>
       <small>Directory checked: {selectedStore.verifiedOn}</small>
-      <a href={selectedStore.sourceUrl} target="_blank" rel="noopener noreferrer">Official building source</a>
-      <small>3D placement and walking directions are not yet verified.</small>
+      <StoreActions store={selectedStore} />
+      <small>Links go to official brand websites; menu availability may vary by location. No live storefront position or ordering integration is claimed.</small>
     </div>}
   </section>;
 }
