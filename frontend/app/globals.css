@@ -193,3 +193,20 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .verified-footnote{margin-top:10px;font-size:10px;line-height:1.5;color:#617b80}
 .verified-error{background:#fff0ed;color:#a33324;padding:11px;border:1px solid #e9bbb2;border-radius:8px;font-size:12px}
 @media(max-width:960px){.verified-nav{padding:12px}.verified-nav-grid{grid-template-columns:1fr}.verified-nav-head{flex-wrap:wrap}.verified-nav-explorer{min-height:280px}}
+
+/* Day 26 — evidence-aware directory and floor-specific discovery */
+.verified-section-label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#315f62;margin-top:4px}
+.verified-business-filters{display:flex;gap:5px;flex-wrap:wrap}
+.verified-business-filters button{border:1px solid #b9d3ce;border-radius:20px;padding:6px 9px;font-size:10px;color:#2b5659;background:#fff;cursor:pointer}
+.verified-business-filters button[aria-pressed="true"]{background:#145d63;border-color:#145d63;color:#fff}
+.verified-business-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:7px;max-height:170px;overflow:auto}
+.verified-business-results button{border:1px solid #d6e5e2;border-radius:8px;padding:9px;background:#fbfdfc;text-align:left;display:grid;gap:4px;cursor:pointer}
+.verified-business-results button:hover,.verified-business-results button:focus-visible,.verified-business-results button[aria-pressed="true"]{border-color:#118a80;background:#e6f5ef}
+.verified-business-results strong{font-size:11px;color:#17464c}.verified-business-results span{font-size:10px;color:#587579}
+.verified-business-detail{display:grid;gap:7px;padding:12px;border:1px solid #c0dad5;background:#eff8f4;border-radius:9px;color:#205056}
+.verified-business-detail strong{font-size:13px}.verified-business-detail span,.verified-business-detail small{font-size:10px;line-height:1.5}
+.verified-business-links{display:flex;flex-wrap:wrap;gap:7px}
+.verified-business-links a{padding:6px 9px;border-radius:6px;background:white;border:1px solid #bcd5cf;color:#086b63;font-size:10px;text-decoration:underline;font-weight:700}
+.verified-business-detail button:disabled{border:1px solid #c0cfcb;border-radius:7px;background:#edf0ee;color:#627570;padding:9px;text-align:left;font-size:11px;cursor:not-allowed}
+.verified-note{font-size:11px;line-height:1.5;color:#5c787b;margin:0}
+.verified-route-result small{display:block;font-size:10px;color:inherit;opacity:.85}
