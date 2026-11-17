@@ -1,16 +1,28 @@
 from __future__ import annotations
 import json
 from pathlib import Path
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from .routing import astar
+from .runtime_config import allowed_origins, is_production
 
 DATA_DIR = Path(__file__).resolve().parents[2] / 'data' / 'geographic'
 DEMO = json.loads((DATA_DIR / 'demo_graph.json').read_text(encoding='utf8'))
 VERIFIED = json.loads((DATA_DIR / 'verified_entrances.json').read_text(encoding='utf8'))
-app = FastAPI(title='PATHway Toronto API',version='0.4.0',description='Provenance-aware routing prototype. Verified indoor edges are NOT available.')
-app.add_middleware(CORSMiddleware,allow_origins=['http://localhost:3000','http://localhost:3001','http://localhost:3002','http://127.0.0.1:3000','http://127.0.0.1:3001','http://127.0.0.1:3002'],allow_credentials=False,allow_methods=['GET'],allow_headers=['*'])
+app = FastAPI(title='PATHway Toronto API',version='0.5.0',description='Evidence-gated PATH navigation research API. Live routes are unavailable without reviewed geometry.',
+                  docs_url=None if is_production() else '/docs', redoc_url=None if is_production() else '/redoc',
+                  openapi_url=None if is_production() else '/openapi.json')
+app.add_middleware(CORSMiddleware,allow_origins=allowed_origins(),allow_credentials=False,allow_methods=['GET'],allow_headers=['Accept','Content-Type'])
+
+@app.middleware('http')
+async def response_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    response.headers['Cache-Control'] = 'no-store'
+    return response
 
 class RouteSegment(BaseModel):
     start: str
