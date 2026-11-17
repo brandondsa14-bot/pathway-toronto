@@ -1,4 +1,37 @@
-# PATHway Toronto
+
+<div align="center">
+
+  <h1>🧭 PATHway Toronto</h1>
+
+  <p>
+    <strong>Navigate downtown Toronto, one connection at a time.</strong>
+  </p>
+
+  <a href="https://github.com/brandondsa14-bot/pathway-toronto">
+    <img
+      src="https://readme-typing-svg.demolab.com?font=Montserrat&weight=600&size=21&duration=2800&pause=1400&color=0D9488&center=true&vCenter=true&width=760&height=55&lines=Interactive+Maps+%26+Location+Discovery;Real+Walking+Routes+%26+Directions;3D+Route+Visualization;Exploring+Toronto's+PATH+Network"
+      alt="PATHway Toronto animated project features"
+    />
+  </a>
+
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-15-111827?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+    <img src="https://img.shields.io/badge/Google_Maps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" alt="Google Maps" />
+    <img src="https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=for-the-badge&logo=openstreetmap&logoColor=white" alt="OpenStreetMap" />
+  </p>
+
+  <p>
+    A full-stack geospatial navigation platform combining
+    interactive mapping, walking directions, location discovery,
+    and experimental 3D route visualization.
+  </p>
+
+</div>
+
+---
+
 
 **An interactive mapping and route-planning platform for exploring downtown Toronto, with a foundation for floor-aware navigation through the PATH network.**
 
