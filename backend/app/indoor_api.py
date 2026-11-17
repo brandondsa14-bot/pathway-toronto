@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException, Query
 from .indoor_network import load_network, shortest_indoor_route
 from .indoor_catalog import load_catalog, search_catalog
 from .route_instructions import route_steps
+from .spatial_scene import publish_scene, snap_to_reviewed_node
 
 router = APIRouter(prefix="/api/v2/indoor", tags=["indoor-evidence"])
 
@@ -62,3 +63,15 @@ def indoor_only_route(
     ids, traversed_edges = result
     steps = route_steps(nodes, ids, traversed_edges)
     return {**base, "status": "VERIFIED_SEGMENTS_ROUTE", "message": "Route uses only source-reviewed, licensed indoor edges; confirm current closures before walking.", "route": {"nodes": ids, "labels": [nodes[ident]["name"] for ident in ids], "distance_m": round(sum(e["length_m"] for e in traversed_edges), 1), "time_minutes": None, "steps": steps, "floor_changes": sum(nodes[ids[i]]["level"] != nodes[ids[i+1]]["level"] for i in range(len(ids)-1))}}
+
+
+@router.get("/scene")
+def indoor_spatial_scene():
+    """Original renderer input. No illustrative or diagram geometry is served."""
+    return publish_scene(load_network())
+
+
+@router.get("/snap")
+def indoor_pin_snap(lon: float = Query(ge=-180, le=180), lat: float = Query(ge=-90, le=90), level: int = Query(ge=-20, le=200)):
+    """Validate a requested floor-aware pin, not a phone GPS indoor fix."""
+    return snap_to_reviewed_node(load_network(), lon, lat, level)
