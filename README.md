@@ -230,3 +230,23 @@ The next major milestone is a **fully validated indoor navigation pilot**, not s
 ---
 
 **PATHway Toronto is a full-stack navigation and spatial-data engineering project:** it demonstrates interactive mapping, external API integration, route planning, 3D visualization, and an evidence-based approach to building trustworthy indoor navigation.
+
+## Development Status & Roadmap
+
+**Current Status:** Active Development — Interactive Navigation Prototype
+
+PATHway Toronto currently supports interactive map exploration, location discovery, coordinate-based route selection, Google Maps walking directions, and an experimental 3D route visualization. The next development phase focuses on improving spatial realism, navigation accuracy, and cross-platform accessibility.
+
+### In Progress
+
+- **Route-Driven 3D PATH Reconstruction:** Developing an immersive 3D navigation experience that dynamically visualizes the surrounding environment based on the user's selected route. This includes recreating PATH corridors, storefronts, building connections, and navigation landmarks using available geographic data, permitted Google Maps visual references, and verified indoor mapping resources.
+- **UI/UX Optimization:** Refining the mapping interface with smoother camera transitions, more intuitive destination selection, responsive layouts, contextual navigation overlays, and seamless transitions between 2D mapping and 3D route visualization.
+- **Indoor Navigation Infrastructure:** Expanding the routing architecture to support floor-aware pathfinding, indoor points of interest, and multi-level navigation as verified corridor and building connectivity data becomes available.
+
+### Planned Development
+
+- **Cross-Platform Mobile Integration:** Exploring a Flutter-based mobile implementation to extend PATHway Toronto beyond the web, with Android emulator testing through Android Studio and iOS simulator testing through Xcode.
+- **Mobile Navigation Testing:** Evaluating touch-based map interactions, location permissions, responsive navigation controls, route rendering performance, and platform-specific usability.
+- **Navigation Reliability & Performance:** Expanding automated testing, route-validation coverage, rendering optimization, and error handling to improve reliability across devices and network conditions.
+
+**Long-Term Goal:** Build a scalable, visually immersive navigation platform that combines interactive 2D mapping, route-aware 3D visualization, and verified indoor wayfinding into a seamless experience across web and mobile devices.
