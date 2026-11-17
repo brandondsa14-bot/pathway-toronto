@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import GoogleStreetMap from "./GoogleStreetMap";
 import RoutePlanner, { type DemoRoute } from "./RoutePlanner";
 import StoreDirectory from "./stores/StoreDirectory";
+import VerifiedNavigator from "./indoor/VerifiedNavigator";
 import { outdoorLocationById } from "./outdoorLocations";
 import { Search, MapPin, Navigation, Layers, ChevronRight, ExternalLink, Info, Building2, Route, Coffee, Compass, Box } from "lucide-react";
 const IndoorExplorer = dynamic(() => import("./three-d/IndoorExplorer"), { ssr: false });
@@ -26,7 +27,7 @@ export default function Home() {
   const [selected,setSelected] = useState("rbp");
   const [origin,setOrigin] = useState("union");
   const [activeRoute,setActiveRoute] = useState<DemoRoute|null>(null);
-  const [layer,setLayer] = useState<"path"|"street"|"three">("path");
+  const [layer,setLayer] = useState<"path"|"street"|"three"|"verified">("path");
   const [filter,setFilter] = useState("All");
   const [zoom,setZoom] = useState(1);
   const [selectedStoreId,setSelectedStoreId] = useState<string|null>(null);
@@ -55,8 +56,8 @@ export default function Home() {
     </aside>
     <section className="workspace"><header className="topbar"><span className="crumb">Toronto <ChevronRight size={14}/> Downtown PATH <ChevronRight size={14}/> Explorer</span><div className="topright"><span className="statusdot"/> Day 15 · Shared Navigation <span className="avatar">PT</span></div></header>
       <div className="maparea"><div className="mapheader"><div><div className="eyebrow">DOWNTOWN MAP</div><h2>Financial District <span>↗</span></h2><div className="mapsubtitle"><MapPin size={14}/> Toronto, Ontario</div></div>
-        <div className="layers"><button aria-pressed={layer==="street"} onClick={()=>setLayer("street")} className={layer==="street"?"active":""}><Layers size={16}/> Street view</button><button aria-pressed={layer==="path"} onClick={()=>setLayer("path")} className={layer==="path"?"active":""}><Route size={16}/> PATH layer</button><button aria-pressed={layer==="three"} onClick={()=>setLayer("three")} className={layer==="three"?"active":""}><Box size={16}/> 3D demo</button></div>
-      </div><div className="mapcanvas">{layer==="street" ? <GoogleStreetMap selectedId={selected} onSelectPlace={selectPlace}/> : layer==="three" ? <IndoorExplorer destinationName={place.name} destinationId={selected}
+        <div className="layers"><button aria-pressed={layer==="street"} onClick={()=>setLayer("street")} className={layer==="street"?"active":""}><Layers size={16}/> Street view</button><button aria-pressed={layer==="path"} onClick={()=>setLayer("path")} className={layer==="path"?"active":""}><Route size={16}/> PATH layer</button><button aria-pressed={layer==="three"} onClick={()=>setLayer("three")} className={layer==="three"?"active":""}><Box size={16}/> 3D demo</button><button aria-pressed={layer==="verified"} onClick={()=>setLayer("verified")} className={layer==="verified"?"active":""}><Navigation size={16}/> Verified PATH</button></div>
+      </div><div className="mapcanvas">{layer==="street" ? <GoogleStreetMap selectedId={selected} onSelectPlace={selectPlace}/> : layer==="verified" ? <VerifiedNavigator/> : layer==="three" ? <IndoorExplorer destinationName={place.name} destinationId={selected}
           destinations={places.map(item => ({ id: item.id, name: item.name }))}
           originName={places.find(item => item.id === origin)?.name || "Unknown"}
           routeLabels={activeRoute?.labels ?? null}
