@@ -70,3 +70,8 @@ def places():return {'places':[{'id':n['id'],'name':n['label'],'position_verific
 
 @app.get('/api/route',response_model=RouteResponse)
 def legacy_route(start:str,end:str):return route_v1(start,end,'demo')
+
+# Day 21: evidence-gated indoor-only routes. Keep /api/v1/route as a separate,
+# explicitly synthetic demonstration; never merge it into verified navigation.
+from .indoor_api import router as indoor_router
+app.include_router(indoor_router)
