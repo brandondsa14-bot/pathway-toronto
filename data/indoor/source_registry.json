@@ -4,12 +4,12 @@
   "sources": [
     {
       "id": "toronto-path-2026",
-      "title": "Toronto PATH Network — January 2026",
-      "url": "https://www.toronto.ca/wp-content/uploads/2024/01/94dd-PATH-Basemap-2023-12-FINAL.pdf",
+      "title": "Toronto PATH Network Simplified \u2014 January 2026 (City map distributed by Financial District BIA)",
+      "url": "https://static1.squarespace.com/static/60466adde21fa469e3679ee3/t/698a2a06c60443326eefb1f2/1770662407020/PATH_AccessibleOnlineMap_Simplified_v2026.01.pdf",
       "publisher": "City of Toronto",
       "published": "2026-01",
       "type": "official_network_diagram",
-      "license_review": "Map copyright retained by City; reproduction, distribution or alteration requires written permission. No geometry digitized or embedded.",
+      "license_review": "City of Toronto copyright, January 2026. Any reproduction, distribution or alteration requires written permission. This repository does not copy or trace the map.",
       "allowed_use_in_this_repository": "Bibliographic citation and names for research/verification planning only",
       "routable_geometry_provided": false
     },

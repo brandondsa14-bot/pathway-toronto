@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "updated_on": "2026-11-16",
+  "purpose": "Evidence-gathering work queue, not routable topology. The listed places currently have NAME_ONLY status.",
+  "items": [
+    {
+      "id": "cibc_square",
+      "priority": "pilot",
+      "evidence_needed": [
+        "venue-authorized indoor access plan",
+        "entrance coordinates",
+        "floor mapping",
+        "inter-building connection survey",
+        "stairs and elevator accessibility"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    },
+    {
+      "id": "union_station",
+      "priority": "pilot",
+      "evidence_needed": [
+        "station-concourse access permission",
+        "verified level mapping",
+        "PATH entrance survey",
+        "vertical connectors and closure rules"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    },
+    {
+      "id": "royal_bank_plaza",
+      "priority": "pilot",
+      "evidence_needed": [
+        "venue floor plan permission",
+        "entrances and precise corridors",
+        "tenant unit geometry",
+        "accessible floor transitions"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    },
+    {
+      "id": "nathan_phillips_square",
+      "priority": "pilot",
+      "evidence_needed": [
+        "verify whether an indoor-only endpoint exists",
+        "nearest verified PATH exit if possible",
+        "outdoor boundary consent"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    },
+    {
+      "id": "brookfield_place",
+      "priority": "later",
+      "evidence_needed": [
+        "venue-approved floor geometry",
+        "cross-building PATH junction survey"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    },
+    {
+      "id": "toronto_dominion_centre",
+      "priority": "later",
+      "evidence_needed": [
+        "venue-approved floor geometry",
+        "connecting passage validation"
+      ],
+      "review_status": "NEEDS_PRIMARY_EVIDENCE",
+      "source_ids": [
+        "toronto-path-2026"
+      ],
+      "licensed_geometry_received": false
+    }
+  ]
+}
