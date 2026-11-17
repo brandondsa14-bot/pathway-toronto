@@ -32,6 +32,18 @@
       "license_review": "Any imported OSM data needs ODbL attribution and share-alike review; no OSM geometry is bundled.",
       "allowed_use_in_this_repository": "Schema design reference",
       "routable_geometry_provided": false
+    },
+    {
+      "id": "royal-bank-plaza-directory",
+      "title": "Royal Bank Plaza official food and beverage tenant directory",
+      "url": "https://royalbankplaza.com/food-and-drinks",
+      "publisher": "Royal Bank Plaza property management",
+      "accessed_on": "2026-11-16",
+      "category": "business_directory",
+      "license_review": "Use only human-authored short summaries and original outbound links. No layout or interior geometry reproduced.",
+      "allowed_use_in_this_repository": "Basic names, categories and external reference URLs in searchable research directory only",
+      "routable_geometry_provided": false,
+      "redistribution_authorized": false
     }
   ]
 }

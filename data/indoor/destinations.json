@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0",
+  "updated_on": "2026-11-16",
+  "data_status": "BUILDING_DIRECTORY_ONLY",
+  "disclaimer": "Store identities in an official building directory; no surveyed interior unit, floor, entrance, or walkable path is represented.",
+  "destinations": [
+    {
+      "id": "mos-rbp",
+      "name": "Mos Mos Coffee",
+      "category": "Coffee & cafés",
+      "kind": "business",
+      "building_anchor_id": "royal_bank_plaza",
+      "building_name": "Royal Bank Plaza",
+      "level": null,
+      "lat": null,
+      "lon": null,
+      "location_status": "BUILDING_LISTED_ONLY",
+      "navigation_ready": false,
+      "source_ids": [
+        "royal-bank-plaza-directory"
+      ],
+      "directory_url": "https://royalbankplaza.com/shop/mos-mos-coffee",
+      "website_url": "https://www.mosmoscoffee.com/",
+      "directory_checked_on": "2026-11-16"
+    },
+    {
+      "id": "tim-rbp",
+      "name": "Tim Hortons",
+      "category": "Coffee & cafés",
+      "kind": "business",
+      "building_anchor_id": "royal_bank_plaza",
+      "building_name": "Royal Bank Plaza",
+      "level": null,
+      "lat": null,
+      "lon": null,
+      "location_status": "BUILDING_LISTED_ONLY",
+      "navigation_ready": false,
+      "source_ids": [
+        "royal-bank-plaza-directory"
+      ],
+      "directory_url": "https://royalbankplaza.com/shop/tim-hortons",
+      "website_url": "https://www.timhortons.ca/",
+      "directory_checked_on": "2026-11-16"
+    },
+    {
+      "id": "starbucks-rbp",
+      "name": "Starbucks",
+      "category": "Coffee & cafés",
+      "kind": "business",
+      "building_anchor_id": "royal_bank_plaza",
+      "building_name": "Royal Bank Plaza",
+      "level": null,
+      "lat": null,
+      "lon": null,
+      "location_status": "BUILDING_LISTED_ONLY",
+      "navigation_ready": false,
+      "source_ids": [
+        "royal-bank-plaza-directory"
+      ],
+      "directory_url": "https://royalbankplaza.com/shop/starbucks",
+      "website_url": "https://www.starbucks.ca/",
+      "directory_checked_on": "2026-11-16"
+    },
+    {
+      "id": "wendys-rbp",
+      "name": "Wendy’s",
+      "category": "Fast food",
+      "kind": "business",
+      "building_anchor_id": "royal_bank_plaza",
+      "building_name": "Royal Bank Plaza",
+      "level": null,
+      "lat": null,
+      "lon": null,
+      "location_status": "BUILDING_LISTED_ONLY",
+      "navigation_ready": false,
+      "source_ids": [
+        "royal-bank-plaza-directory"
+      ],
+      "directory_url": "https://royalbankplaza.com/shop/wendys",
+      "website_url": "https://www.wendys.com/en-ca",
+      "directory_checked_on": "2026-11-16"
+    }
+  ]
+}

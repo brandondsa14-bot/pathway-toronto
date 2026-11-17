@@ -3,8 +3,24 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query
 from .indoor_network import load_network, shortest_indoor_route
+from .indoor_catalog import load_catalog, search_catalog
 
 router = APIRouter(prefix="/api/v2/indoor", tags=["indoor-evidence"])
+
+
+@router.get("/catalog")
+def indoor_catalog(q: str = "", category: str = "all"):
+    """Directory listings are discoverable, but NOT destination coordinates."""
+    catalog = load_catalog()
+    records = search_catalog(q, category)
+    return {
+        "status": "BUILDING_DIRECTORY_ONLY",
+        "total": len(catalog["destinations"]),
+        "count": len(records),
+        "categories": sorted({r["category"] for r in catalog["destinations"]}),
+        "destinations": records,
+        "disclaimer": catalog["disclaimer"],
+    }
 
 
 @router.get("/coverage")
