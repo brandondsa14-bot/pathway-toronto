@@ -49,7 +49,7 @@ def publish_scene(network: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def snap_to_reviewed_node(network: dict[str, Any], lon: float, lat: float, level: int, threshold_m: float = 8.0) -> dict[str, Any]:
+def snap_to_reviewed_node(network: dict[str, Any], lon: float, lat: float, level: float, threshold_m: float = 8.0) -> dict[str, Any]:
     """A map click is a *request* for pin placement, not proof of an indoor fix.
 
     Only snap to a route node with reviewed walkable edges on the specified

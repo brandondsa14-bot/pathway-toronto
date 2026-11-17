@@ -27,6 +27,9 @@ export type RouteStep = {
   length_m: number; floor_from: number; floor_to: number;
   geometry: number[][]; accessible: boolean | null; source_id: string;
   verified_on: string; operational_status?: string; edge_id?: string;
+  turn?: "CONTINUE" | "TURN_LEFT" | "TURN_RIGHT" | "TURN_AROUND";
+  corridor_name?: string | null;
+  maneuvers?: {at: number[]; turn: string; instruction: string}[];
 };
 export type RouteResult = {
   status: string; message: string;
@@ -45,3 +48,24 @@ export type CatalogResponse = {
   status: string; total: number; count: number;
   categories: string[]; destinations: CatalogBusiness[]; disclaimer: string;
 };
+
+/** Community-mapped OSM geography. NOT licensed/survey-verified PATH routing. */
+export type OSMCandidate = {
+  id: string; name: string; category: string;
+  lat: number; lon: number; floor: number | null;
+  scope: "POSSIBLE_PATH" | "NEARBY_DOWNTOWN";
+  position_quality: "OSM_POINT" | "OSM_FEATURE_CENTROID";
+  verification_status: "COMMUNITY_MAPPED_UNVERIFIED";
+  source_url: string; street: string; building: string;
+  geometry: number[][]; osm_level_tag: string; accessible_tag: string;
+  indoor_tag: string;
+};
+export type OSMExploreResponse = {
+  status: string; source: string; license: string;
+  attribution_url: string; generated_on: string | null;
+  total: number; returned: number; items: OSMCandidate[];
+  categories: string[]; floors_in_source: number[];
+  path_candidate_count: number; category_totals: Record<string,number>;
+  disclaimer: string;
+};
+export type ProposedPin = {lat: number; lon: number};

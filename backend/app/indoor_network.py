@@ -31,6 +31,12 @@ class NetworkValidationError(ValueError):
     """Unreviewed or structurally invalid data must not be served as a route."""
 
 
+def _surveyed_floor(value: Any) -> bool:
+    """Allow signed half-levels only when source-reviewed: -0.5, -1, -2, etc."""
+    return (not isinstance(value, bool) and isinstance(value, (int, float)) and
+            isfinite(value) and -20 <= value <= 200 and abs(value * 2 - round(value * 2)) < 1e-8)
+
+
 def _numeric(value: Any, key: str) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not isfinite(value):
         raise NetworkValidationError(f"{key} must be a finite number")
@@ -54,7 +60,7 @@ def validate_network(network: dict[str, Any], registry: dict[str, Any]) -> dict[
         if status != "NAME_ONLY":
             if not any(sources[src].get("routable_geometry_provided") and sources[src].get("redistribution_authorized") for src in node["source_ids"]):
                 raise NetworkValidationError(f"Verified indoor point needs a licensed surveying source: {ident}")
-            if not isinstance(node.get("level"), int) or isinstance(node["level"], bool):
+            if not _surveyed_floor(node.get("level")):
                 raise NetworkValidationError(f"Verified node needs a floor: {ident}")
             lat = _numeric(node.get("lat"), "lat")
             lon = _numeric(node.get("lon"), "lon")

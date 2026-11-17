@@ -309,3 +309,79 @@ button:disabled{opacity:.5;cursor:not-allowed}
  .pathway-search-body,.pathway-route-form{padding:11px 14px}.pathway-results{max-height:130px}
 }
 @media(prefers-reduced-motion:reduce){.pathway-explorer *, .pathway-explorer *:before,.pathway-explorer *:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* PATH Atlas extension: community-mapped candidate directory & explicitly unverified map overlay. */
+.pathway-osm-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #d9e5e3;padding-top:12px}
+.pathway-osm-heading h4{margin:0}
+.pathway-osm-heading>span{font-size:9px;color:#6b827f;text-align:right}
+.pathway-osm-empty{padding:12px;border:1px dashed #9bbdb6;border-radius:12px;background:#f7faf6;color:#3a6264;line-height:1.55}
+.pathway-osm-empty strong{font-size:12px}.pathway-osm-empty p{font-size:11px;margin:6px 0}
+.pathway-osm-empty code{display:block;font-size:10px;overflow-wrap:anywhere;background:#e5efec;border-radius:7px;padding:9px;color:#09575a}
+.pathway-osm-meta{background:#eef7f6;border-radius:10px;padding:10px;display:grid;gap:4px}
+.pathway-osm-meta strong{font-size:12px;color:#155c60}.pathway-osm-meta small{font-size:10px;color:#546e72;line-height:1.5}
+.pathway-osm-scope{display:flex;align-items:center;gap:7px;font-size:11px;color:#3b6167}
+.pathway-osm-scope input{accent-color:#097f88}
+.pathway-osm-results{max-height:260px}
+.pathway-osm-unverified{font-size:9px;color:#397577;background:#e2f5f1;border-radius:6px;padding:5px}
+.pathway-osm-detail{background:#f9fbef;border-color:#d7dbc2}
+.pathway-osm-detail button:disabled{border:1px solid #c2c6be;border-radius:8px;background:#e6e9df;color:#63706a;padding:10px;font-size:11px}
+.pathway-floor-control{min-width:248px}
+.pathway-floor-control select{max-width:268px}
+.spatial-map-surface .googlemap-disclaimer{background:#fffdf4f0;border:1px solid #ecdfbb}
+@media(max-width:760px){.pathway-floor-control{min-width:unset;max-width:62%}.pathway-osm-results{max-height:175px}.pathway-osm-heading{display:grid}}
+.pathway-proposed-pins{display:grid;gap:8px;border:1px solid #dfc88f;background:#fff9e9;border-radius:9px;padding:11px;font-size:11px;color:#4d645a}
+.pathway-proposed-pins strong{font-size:12px;color:#735927}
+.pathway-proposed-pins>div{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pathway-proposed-pins>div span{font-weight:800}
+.pathway-proposed-pins button{padding:5px 7px;border:1px solid #c8b889;border-radius:6px;background:#fff;font-size:10px}
+.pathway-proposed-pins small{font-size:10px;line-height:1.5;color:#7b6a48}
+.community3d{position:absolute;inset:0;overflow:hidden}
+.community3d-warning{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:#fffdf3ed;border:1px solid #e7d5aa;border-radius:12px;box-shadow:0 5px 20px #0002;max-width:min(560px,90%);padding:10px 14px;color:#6d5c36;font-size:11px;z-index:3;line-height:1.5}
+.community3d-warning strong{display:block;font-size:12px;color:#665021}
+.community3d-warning span{display:block;margin-top:4px}
+.community3d-label{border:1px solid #ced4ce;color:#3e5052;background:#fffffff0;border-radius:5px;font-size:10px;font-weight:650;padding:4px 7px;white-space:nowrap;cursor:pointer}
+.community3d-label.selected{border-color:#c77d20;background:#fff2d1;color:#724711}
+.spatial-map-tools{flex-wrap:wrap;max-width:min(650px,calc(100% - 16px))}
+@media(max-width:760px){.community3d-warning{bottom:78px;font-size:9px}.community3d-warning strong{font-size:10px}.spatial-map-tools button{font-size:9px}}
+.spatial-osm-attribution{position:absolute;z-index:4;bottom:12px;left:13px;padding:7px 9px;font-size:10px;color:#465f61;background:#fffffff0;border:1px solid #d5e1df;border-radius:8px;max-width:350px}
+.spatial-osm-attribution a{color:#086e80;text-decoration:underline}
+@media(max-width:760px){.spatial-osm-attribution{bottom:58px;max-width:220px;font-size:9px}}
+
+/* Route Planner upgrade — strictly distinguish verified underground routes from
+   Google Maps STREET WALKING. No bogus PATH polylines, heights, or floor data. */
+.pathway-route-modes{display:flex;gap:5px;padding:4px;background:#e7efed;border-radius:11px;margin:0 0 9px}
+.pathway-route-modes button{flex:1;padding:9px 7px;border:1px solid transparent;border-radius:8px;background:transparent;color:#3b6267;font-size:11px;font-weight:800;cursor:pointer}
+.pathway-route-modes button[aria-pressed="true"]{background:#115961;color:white;box-shadow:0 2px 7px #133c422b}
+.pathway-route-mode-note{font-size:11px;line-height:1.5;color:#5f7277;margin:0 0 8px}
+.pathway-street-fields{display:grid;gap:10px;margin-bottom:12px}
+.pathway-street-fields label{display:grid;gap:5px;font-size:11px;color:#365a60;font-weight:700}
+.pathway-street-fields input[type="search"],.pathway-street-fields select{padding:10px 11px;border:1px solid #c4d8d3;border-radius:9px;width:100%;min-width:0;background:white;color:#123e4a;font:inherit;font-size:12px}
+.pathway-street-fields small{font-size:10px;color:#6c7f82;line-height:1.45}
+.pathway-street-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pathway-street-actions button{border:1px solid #bad4d0;border-radius:8px;color:#14515a;background:#ecf7f2;padding:7px 10px;font-weight:750;font-size:11px;display:flex;align-items:center;gap:4px;cursor:pointer}
+.pathway-street-link{display:flex;align-items:center;gap:6px;justify-content:center;margin:8px 0 10px;font-size:11px;font-weight:750;color:#145e68;text-decoration:underline}
+.pathway-street-route{padding:12px;background:#fffaf0;border:1px solid #edc78b;border-radius:12px;display:grid;gap:8px;font-size:11px;line-height:1.5;color:#68471b;margin:6px 0 14px}
+.pathway-street-route>strong{font-size:13px;color:#8a410c}
+.pathway-street-route p{margin:0}.pathway-street-route small{font-size:10px}
+.pathway-street-warning{padding:9px 10px;border-left:4px solid #e78327;background:#fff2d7;border-radius:4px;font-weight:650}
+.pathway-street-route h4{margin:4px 0;font-size:12px}
+.pathway-street-route ol{list-style:decimal;padding-left:20px;margin:0;display:grid;gap:5px;max-height:220px;overflow:auto}
+.pathway-street-route li button{background:#fff;width:100%;color:#244f59;border:1px solid #efd7b6;border-radius:7px;text-align:left;padding:9px;display:grid;gap:3px;cursor:pointer;font-size:11px}
+.pathway-street-route li button.active{border-color:#0a696c;background:#e9f7f2;box-shadow:inset 3px 0 #0a696c}
+.pathway-street-route li button small{color:#748084}
+.pathway-candidate-actions{display:flex;gap:6px;flex-wrap:wrap}
+.pathway-candidate-actions button{flex:1;min-width:105px;border:1px solid #bed5ce;background:#e3f3ed;border-radius:6px;padding:8px 5px;color:#145a57;font-size:10px;cursor:pointer;font-weight:750}
+.pathway-journey3d{position:absolute;inset:0;background:#e8f1ef}
+.pathway-journey3d canvas{display:block;height:100%!important;width:100%!important}
+.pathway-journey3d-bar{z-index:8;position:absolute;top:65px;left:50%;transform:translateX(-50%);width:min(570px,calc(100% - 35px));display:grid;gap:6px;background:#fffffff5;border-radius:12px;padding:10px 13px;box-shadow:0 12px 30px #123b4233;border:1px solid #cfdfda;color:#154653}
+.pathway-journey3d-buttons{display:flex;gap:7px;flex-wrap:wrap;align-items:center;font-size:11px}
+.pathway-journey3d-buttons a{padding:7px 10px;border:1px solid #8bbcb4;border-radius:7px;color:#165863;background:#e7f7f2;text-decoration:none;font-weight:750;font-size:11px}
+.pathway-journey3d-buttons button{padding:7px 10px;border:0;border-radius:7px;background:#145b63;color:#fff;font-size:11px;font-weight:750;cursor:pointer}
+.pathway-journey3d-buttons label{display:flex;align-items:center;gap:4px;font-size:11px;color:#355c62}
+.pathway-journey3d-buttons select{padding:4px;border-radius:5px;border:1px solid #c3d9d4}
+.pathway-journey3d-slider{display:flex;align-items:center;gap:12px;font-size:10px;font-weight:750}
+.pathway-journey3d-slider input{flex:1;min-width:100px;accent-color:#147d7b}
+.pathway-journey3d-instruction{font-size:11px;color:#315962;line-height:1.45}
+.pathway-journey3d-notice{position:absolute;z-index:7;left:50%;bottom:95px;transform:translateX(-50%);width:min(610px,calc(100% - 35px));font-size:10px;line-height:1.5;color:#66471e;background:#fff6dfed;border:1px solid #edcd8f;border-radius:9px;padding:9px 12px;text-align:center}
+.pathway-explorer button:focus-visible,.pathway-explorer input:focus-visible,.pathway-explorer select:focus-visible{outline:3px solid #e6a84d;outline-offset:2px}
+@media(max-width:700px){.pathway-journey3d-bar{top:55px}.pathway-journey3d-notice{bottom:75px}.pathway-street-route ol{max-height:170px}.spatial-map-tools{flex-wrap:wrap;max-width:calc(100% - 18px);right:9px;top:8px}}

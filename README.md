@@ -15,6 +15,10 @@ A Google Maps-style search and wayfinding interface with Mappedin-like discovera
 - **Strict verified-geometry API:** `/api/v2/indoor/scene` publishes only licensed, review-validated lines; `/api/v2/indoor/snap` rejects unverified indoor pin drops; `/api/v2/indoor/route` fails closed when a verified path does not exist.
 - **3D readiness:** scene-driven React Three Fiber orbit view, floor-specific corridors and reviewed junction labels **only when valid data exists**. At present the 3D indoor mode is disabled because no such geometry is licensed/verified.
 - **Algorithm tests:** directionality, vertical transitions, accessibility restrictions, closure state, route instructions, network QA and source requirements, using **test-only** fixtures. The API never uses the fictitious demonstration graph for v2 routing.
+- **Street walking directions (separate from PATH):** Google Maps JavaScript Routes Library requests actual outdoor walking geometry for typed addresses, dragged pins or OSM candidate points, displays provider-sourced turn instructions, and draws an orange map route. Requires the Google Routes API enabled for your browser key; an external Google Maps walking-directions fallback is included.
+- **Route 3D flyover:** an interactive camera follows the outdoor route on a *stylized* low-relief model based on available OSM outlines. It is **not** a PATH floorplan, surveyed building height, real indoor view, or Google Street View; an optional link opens Google's nearby street imagery where available.
+- **Coordinate-aware indoor pilot endpoint:** `/api/v2/indoor/route/pins` can snap proposed points to actual reviewed open walking segments and split them for routing (with test-only fixtures). Production still has no reviewed walkways and must refuse to route.
+- **OSM atlas discovery:** optional, separately attributed community-mapped points and available polygons from the local opt-in importer; these are never promoted to verified PATH corridors.
 - **Legacy demonstrations preserved:** standalone PATH schematic and fictional 3D corridor with storefront labels for UI exploration, separate from Verified PATH.
 
 ### What does not work yet
@@ -43,7 +47,9 @@ npm run dev -- -p 3000
 
 Open **http://localhost:3000**. Select **Verified PATH** for the map-first experience. On the first run, create `frontend/.env.local` from `.env.example` and set your Google Maps JS browser API key there; the app displays a fallback if it is absent. **Never commit `.env.local`**. Restrict the browser key by HTTP referrer and API in Google Cloud; public browser keys are still observable to users. A backend base URL can be configured using `NEXT_PUBLIC_PATH_API_BASE_URL`.
 
-**Key test:** CIBC Square → Nathan Phillips Square in Verified PATH should return `DATA_NOT_AVAILABLE` with no invented route or time. The unverified Tim Hortons business card must have navigation disabled.
+**Two distinct route modes:** **Verified indoor PATH** must still say `DATA_NOT_AVAILABLE` for CIBC Square → Nathan Phillips Square; **Street walking** can request Google walking directions between those names, any address, or dropped map pins. The orange street line and the 3D flyover are **not underground PATH directions**. The unverified Tim Hortons business card cannot become an indoor endpoint.
+
+Enable **Routes API** (the current Maps JavaScript Routes Library) in the Google Cloud project for your browser key, with appropriate restrictions and billing; never place the key in Git. See [Route Planner Upgrade](docs/ROUTE_PLANNER_UPGRADE.md) and [Manual acceptance tests](docs/ROUTE_PLANNER_QA.md).
 
 ## Tests and quality gates
 
@@ -65,6 +71,7 @@ CI checks backend tests and frontend builds. For reproducible CI, generate and c
 | `GET /api/v2/indoor/scene` | Licensed reviewed corridor features for map and 3D |
 | `GET /api/v2/indoor/snap?lon=...&lat=...&level=...` | Validate proposed point against reviewed walking nodes |
 | `GET /api/v2/indoor/route?start=...&end=...` | Route on verified indoor graph only, or return no-data |
+| `GET /api/v2/indoor/route/pins?...` | Snap coordinate/floor pairs to licensed, confirmed-open corridor segments and route between them, or decline |
 | `GET /api/v1/route?mode=demo&start=...&end=...` | **Synthetic demonstration only** |
 
 ## Data and rights
@@ -88,3 +95,15 @@ The four Day 27–30 commits are staged locally first and pushed to GitHub toget
 - [Royal Bank Plaza property directory](https://royalbankplaza.com/food-and-drinks)
 
 This repository does not contain copyrighted PATH map graphics, Mappedin venue geometry, or private API credentials.
+
+## PATH Atlas — expanded community-mapped discovery (optional research upgrade)
+
+The `PATH atlas` view now supports an **optional OSM community POI import** for downtown Toronto: more named buildings, cafés, shopping, washrooms, subway entrances, elevators and escalators **where OSM contributors have mapped them**. Floor filters include `-0.5`, `-1`, `-2`; the map can show OSM points/outlines and an unverified polygon-based 3D preview when source polygons exist. Click/dragging map pins is available for proposed origins and destinations, but the pins do **not** become valid indoor routes without surveyed geometry.
+
+To populate the local discovery snapshot (Internet required, one-off request):
+
+```bash
+python3 tools/import_osm_path_candidates.py --fetch
+```
+
+Restart/refresh the site and API, then open `PATH atlas` or `Verified routes`. The generated `data/indoor/osm_candidates.json` is deliberately gitignored and does not authorize copying proprietary Mappedin/CITY maps or claiming any route verified. Read [`docs/PATH_ATLAS_UPGRADE.md`](docs/PATH_ATLAS_UPGRADE.md) and [`docs/PATH_ATLAS_SOURCE_MATRIX.md`](docs/PATH_ATLAS_SOURCE_MATRIX.md). Keep `Synthetic demo` and `3D demo` visibly separate from real navigation.

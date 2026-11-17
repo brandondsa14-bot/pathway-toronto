@@ -10,3 +10,6 @@ __pycache__/
 .DS_Store
 *.zip
 *.tsbuildinfo
+
+# Local OpenStreetMap research snapshot (ODbL, not verified PATH geometry)
+/data/indoor/osm_candidates.json

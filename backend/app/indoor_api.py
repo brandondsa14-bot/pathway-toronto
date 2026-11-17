@@ -72,6 +72,28 @@ def indoor_spatial_scene():
 
 
 @router.get("/snap")
-def indoor_pin_snap(lon: float = Query(ge=-180, le=180), lat: float = Query(ge=-90, le=90), level: int = Query(ge=-20, le=200)):
+def indoor_pin_snap(lon: float = Query(ge=-180, le=180), lat: float = Query(ge=-90, le=90), level: float = Query(ge=-20, le=200)):
     """Validate a requested floor-aware pin, not a phone GPS indoor fix."""
     return snap_to_reviewed_node(load_network(), lon, lat, level)
+
+# Additional discovery catalog from an explicit, one-time OpenStreetMap import.
+# This endpoint never grants route eligibility or alters the verified PATH network.
+from .osm_candidates import explore_catalog, load_snapshot
+
+@router.get("/explore")
+def explore_osm_places(q: str = "", category: str = "all", level: str = "all", scope: str = "all", limit: int = Query(default=5000, ge=1, le=5000)):
+    return explore_catalog(load_snapshot(), q=q, category=category, level=level, scope=scope, limit=limit)
+
+# Coordinate-first routing for independently surveyed pilot areas ONLY.
+# The current Toronto production dataset is empty and always declines to route.
+from .coordinate_routing import route_between_pins
+
+@router.get("/route/pins")
+def route_from_two_reviewed_pins(
+    start_lon: float = Query(ge=-180,le=180), start_lat: float = Query(ge=-90,le=90), start_level: float = Query(ge=-20,le=200),
+    end_lon: float = Query(ge=-180,le=180), end_lat: float = Query(ge=-90,le=90), end_level: float = Query(ge=-20,le=200),
+    accessible_only: bool = False, avoid_floor_changes: bool = False,
+):
+    return route_between_pins(load_network(),start_lon=start_lon,start_lat=start_lat,start_level=start_level,
+                              end_lon=end_lon,end_lat=end_lat,end_level=end_level,
+                              accessible_only=accessible_only,avoid_floor_changes=avoid_floor_changes)
