@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "network_id": "toronto-path-research",
+  "status": "SOURCE_REFERENCES_ONLY",
+  "scope_note": "Place names are source-documented; entrances, levels, interior coordinates and walkable connections are NOT verified. No real route can be computed.",
+  "nodes": [
+    {"id":"cibc_square", "name":"CIBC Square", "kind":"building_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]},
+    {"id":"nathan_phillips_square", "name":"Nathan Phillips Square", "kind":"landmark_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]},
+    {"id":"union_station", "name":"Union Station", "kind":"station_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]},
+    {"id":"royal_bank_plaza", "name":"Royal Bank Plaza", "kind":"building_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]},
+    {"id":"brookfield_place", "name":"Brookfield Place", "kind":"building_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]},
+    {"id":"toronto_dominion_centre", "name":"Toronto-Dominion Centre", "kind":"building_anchor", "level":null, "lat":null, "lon":null, "position_status":"NAME_ONLY", "source_ids":["toronto-path-2026"]}
+  ],
+  "edges": []
+}
