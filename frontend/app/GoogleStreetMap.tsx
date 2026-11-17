@@ -2,25 +2,41 @@
 
 import { useEffect, useRef, useState } from "react";
 import { outdoorLocations, outdoorLocationById } from "./outdoorLocations";
+import type { ReviewedNode, ReviewedFeature } from "./indoor/spatialTypes";
 
 type Point = { lat: number; lng: number };
-type MapInstance = { panTo: (point: Point) => void };
-type MapMarker = { addListener: (eventName: string, listener: () => void) => {remove: () => void}; setMap: (map: MapInstance | null) => void };
+type MapsListener = { remove: () => void };
+type MapInstance = { panTo: (point: Point) => void; addListener: (name: string, callback: (event: {latLng?: {lat: () => number; lng: () => number}}) => void) => MapsListener };
+type MapMarker = { addListener: (eventName: string, listener: () => void) => MapsListener; setMap: (map: MapInstance | null) => void };
+type MapPolyline = {setMap: (map: MapInstance | null) => void};
 type GoogleMapsAPI = {
   Map: new (element: HTMLElement, options: Record<string, unknown>) => MapInstance;
   Marker: new (options: Record<string, unknown>) => MapMarker;
+  Polyline: new (options: Record<string, unknown>) => MapPolyline;
 };
 type GoogleWindow = Window & { google?: { maps?: GoogleMapsAPI } };
 
 const CENTER = {lat:43.6475, lng:-79.3801};
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-type Props = { selectedId: string; onSelectPlace: (id: string) => void };
+const EMPTY_NODES: ReviewedNode[] = [];
+const EMPTY_FEATURES: ReviewedFeature[] = [];
 
-export default function GoogleStreetMap({selectedId, onSelectPlace}: Props) {
+type Props = {
+  selectedId: string; onSelectPlace: (id: string) => void;
+  reviewedNodes?: ReviewedNode[]; reviewedFeatures?: ReviewedFeature[];
+  selectedLevel?: number | "all"; onReviewedNodeSelect?: (id: string) => void;
+  onReviewedMapClick?: (lon: number, lat: number) => void;
+};
+
+export default function GoogleStreetMap({selectedId, onSelectPlace, reviewedNodes = EMPTY_NODES, reviewedFeatures = EMPTY_FEATURES, selectedLevel = "all", onReviewedNodeSelect, onReviewedMapClick}: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapInstance | null>(null);
   const selectRef = useRef(onSelectPlace);
+  const reviewedSelectRef = useRef(onReviewedNodeSelect);
+  const mapClickRef = useRef(onReviewedMapClick);
+  reviewedSelectRef.current = onReviewedNodeSelect;
+  mapClickRef.current = onReviewedMapClick;
   const [status, setStatus] = useState<"loading"|"ready"|"error">("loading");
   selectRef.current = onSelectPlace;
 
@@ -28,6 +44,7 @@ export default function GoogleStreetMap({selectedId, onSelectPlace}: Props) {
     if (!API_KEY) return;
     let cancelled = false;
     let markers: MapMarker[] = [];
+    let lines: MapPolyline[] = [];
     let listeners: Array<{remove: () => void}> = [];
     const w = window as GoogleWindow;
     const initialize = () => {
@@ -46,6 +63,25 @@ export default function GoogleStreetMap({selectedId, onSelectPlace}: Props) {
         listeners.push(marker.addListener("click", () => selectRef.current(place.id)));
         return marker;
       });
+      // The original approximate outdoor markers remain separate from route evidence.
+      // Never create unreviewed storefront footprints or interior pins here.
+      if (api.Polyline) {
+        lines = reviewedFeatures.filter(f => selectedLevel === "all" ||
+          f.properties.level_from === selectedLevel || f.properties.level_to === selectedLevel)
+          .map(f => new api.Polyline({
+            map, path: f.geometry.coordinates.map(([lon, lat]) => ({lat, lng: lon})),
+            strokeColor: f.properties.operational_status === "CONFIRMED_OPEN" ? "#087e82" : "#b17b28",
+            strokeWeight: 6, strokeOpacity: 0.96,
+          }));
+      }
+      reviewedNodes.filter(n => selectedLevel === "all" || n.level === selectedLevel).forEach(n => {
+        const pin = new api.Marker({map, position: {lat: n.lat, lng: n.lon}, title: `${n.name} — reviewed walking node, level ${n.level}`});
+        markers.push(pin);
+        listeners.push(pin.addListener("click", () => reviewedSelectRef.current?.(n.id)));
+      });
+      if (mapClickRef.current) listeners.push(map.addListener("click", event => {
+        if (event.latLng) mapClickRef.current?.(event.latLng.lng(), event.latLng.lat());
+      }));
       setStatus("ready");
     };
 
@@ -73,10 +109,11 @@ export default function GoogleStreetMap({selectedId, onSelectPlace}: Props) {
       window.clearTimeout(timeout);
       listeners.forEach(listener => { if (listener && typeof listener.remove === "function") listener.remove(); });
       markers.forEach(marker => marker.setMap(null));
+      lines.forEach(line => line.setMap(null));
       markers = []; listeners = [];
       mapRef.current = null;
     };
-  }, []);
+  }, [reviewedNodes, reviewedFeatures, selectedLevel]);
 
   useEffect(() => {
     const location = outdoorLocationById[selectedId];

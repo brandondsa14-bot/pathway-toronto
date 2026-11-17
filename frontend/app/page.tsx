@@ -41,7 +41,7 @@ export default function Home() {
   function selectPlace(id:string) {setSelected(id);setActiveRoute(null);setMobilePanel("details");}
   function updateOrigin(id:string) {setOrigin(id);setActiveRoute(null);}
 
-  return <main className={`shell mobile-${mobilePanel}`}>
+  return <main className={`shell mobile-${mobilePanel} ${layer === "verified" ? "verified-shell" : ""}`}>
     <nav className="mobiletabs" aria-label="Mobile sections">
       {(["explore","map","details"] as const).map(tab => <button key={tab} className={mobilePanel===tab?"active":""} onClick={()=>setMobilePanel(tab)}>{tab[0].toUpperCase()+tab.slice(1)}</button>)}
     </nav>
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="places">{filtered.map(p=><button key={p.id} className={`place ${p.id===selected?"selected":""}`} onClick={()=>selectPlace(p.id)}><span className="placeicon">{p.type.includes("Coffee")?<Coffee size={19}/>:p.type==="Transit"?<Navigation size={19}/>:<Building2 size={19}/>}</span><span className="placetext"><strong>{p.name}</strong><small>{p.type}</small></span><ChevronRight size={17}/></button>)}{filtered.length===0&&<p className="empty">No places match this search.</p>}</div>
       </div><div className="sidefoot"><Info size={16}/><span>Research prototype · indoor marker coordinates and connections are illustrative, not safe for real-world navigation.</span></div>
     </aside>
-    <section className="workspace"><header className="topbar"><span className="crumb">Toronto <ChevronRight size={14}/> Downtown PATH <ChevronRight size={14}/> Explorer</span><div className="topright"><span className="statusdot"/> Day 15 · Shared Navigation <span className="avatar">PT</span></div></header>
+    <section className="workspace"><header className="topbar"><span className="crumb">Toronto <ChevronRight size={14}/> Downtown PATH <ChevronRight size={14}/> Explorer</span><div className="topright"><span className="statusdot"/> Source-aware navigation <span className="avatar">PT</span></div></header>
       <div className="maparea"><div className="mapheader"><div><div className="eyebrow">DOWNTOWN MAP</div><h2>Financial District <span>↗</span></h2><div className="mapsubtitle"><MapPin size={14}/> Toronto, Ontario</div></div>
         <div className="layers"><button aria-pressed={layer==="street"} onClick={()=>setLayer("street")} className={layer==="street"?"active":""}><Layers size={16}/> Street view</button><button aria-pressed={layer==="path"} onClick={()=>setLayer("path")} className={layer==="path"?"active":""}><Route size={16}/> PATH layer</button><button aria-pressed={layer==="three"} onClick={()=>setLayer("three")} className={layer==="three"?"active":""}><Box size={16}/> 3D demo</button><button aria-pressed={layer==="verified"} onClick={()=>setLayer("verified")} className={layer==="verified"?"active":""}><Navigation size={16}/> Verified PATH</button></div>
       </div><div className="mapcanvas">{layer==="street" ? <GoogleStreetMap selectedId={selected} onSelectPlace={selectPlace}/> : layer==="verified" ? <VerifiedNavigator/> : layer==="three" ? <IndoorExplorer destinationName={place.name} destinationId={selected}
