@@ -1,59 +1,90 @@
 # PATHway Toronto
 
-A full-stack Computer Science portfolio project aiming at real-world 2D/3D navigation for Toronto's PATH. **This package is Day 01, not the finished application.** It includes a functional, polished frontend schematic and a separate FastAPI demonstration routing service.
+**A map-first, evidence-aware research prototype for navigating Toronto's underground PATH.** Built with Next.js, React, TypeScript, Google Maps JS API, React Three Fiber, Python, and FastAPI.
 
-**IMPORTANT:** The current street lines, graph edges, indoor location markers and map coordinates are **synthetic and not geographically accurate**. Never use them for travel or accessible-route guidance. The business listing for Mos Mos Coffee comes from the official Royal Bank Plaza directory; its SVG map location is *illustrative*.
+> **NOT FOR REAL-WORLD NAVIGATION.** This project currently contains **zero licensed, surveyed, verified PATH walking corridors**. It cannot calculate a trustworthy indoor-only route, reachability, wheelchair route, or closest exit. The former PATH schematic and 3D hallway remain **explicit fictional demonstrations**, not maps of Toronto. The accuracy gate is intentional.
 
-## Run the frontend
-Requires Node.js 20+ and npm:
+## Product vision
+
+A Google Maps-style search and wayfinding interface with Mappedin-like discoverability, floor switching, 2D/3D exploration, business/amenity markers and step-by-step directions **once lawful and verified indoor mapping data has been obtained**. The final target is a real spatial representation, *not a nicer generic hallway*.
+
+### What works today
+
+- **Map-first Verified PATH explorer:** live real-world street context from Google Maps with a searchable origin/destination panel, floor-aware controls, accessible routing preferences, keyboard-accessible navigation, and responsive layout.
+- **Source-backed discovery:** six documented place anchors and four Royal Bank Plaza directory businesses; search, category filters, outbound official links, and explicit unverified store unit/floor status.
+- **Strict verified-geometry API:** `/api/v2/indoor/scene` publishes only licensed, review-validated lines; `/api/v2/indoor/snap` rejects unverified indoor pin drops; `/api/v2/indoor/route` fails closed when a verified path does not exist.
+- **3D readiness:** scene-driven React Three Fiber orbit view, floor-specific corridors and reviewed junction labels **only when valid data exists**. At present the 3D indoor mode is disabled because no such geometry is licensed/verified.
+- **Algorithm tests:** directionality, vertical transitions, accessibility restrictions, closure state, route instructions, network QA and source requirements, using **test-only** fixtures. The API never uses the fictitious demonstration graph for v2 routing.
+- **Legacy demonstrations preserved:** standalone PATH schematic and fictional 3D corridor with storefront labels for UI exploration, separate from Verified PATH.
+
+### What does not work yet
+
+No real Toronto interior floor plans, retail unit outlines, corridor polygons, surveyed entrances, validated escalator/elevator transitions, live closure feed, validated user indoor positioning, or actual indoor directions. Street markers represent **approximate buildings only**. Google Maps does not provide precise indoor floor positioning. Don't represent the project as a live wayfinding product or an end-to-end 90%-equivalent Mappedin replacement.
+
+## Run locally
+
+Requires Node.js 20+ (22 recommended) and Python 3.11+.
 
 ```bash
-cd frontend
-npm install
-npm run dev
-```
-Open http://localhost:3000. Search places, filter categories, choose a destination, select an origin, preview a **demo-only** route, switch map layers, zoom and open the official Royal Bank Plaza directory.
-
-## Run the API
-Requires Python 3.10+:
-
-```bash
+# Terminal A — FastAPI
 cd backend
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
-On Windows activate with `.venv\Scripts\activate` instead. API docs: http://localhost:8000/docs. Try `/health`, `/api/places`, and `/api/route?start=union&end=commerce`.
 
-## Run backend tests
 ```bash
-cd backend
-python -m pytest -q
+# Terminal B — Next.js
+cd frontend
+npm install
+npm run dev -- -p 3000
 ```
 
-## GitHub: Day 01
+Open **http://localhost:3000**. Select **Verified PATH** for the map-first experience. On the first run, create `frontend/.env.local` from `.env.example` and set your Google Maps JS browser API key there; the app displays a fallback if it is absent. **Never commit `.env.local`**. Restrict the browser key by HTTP referrer and API in Google Cloud; public browser keys are still observable to users. A backend base URL can be configured using `NEXT_PUBLIC_PATH_API_BASE_URL`.
+
+**Key test:** CIBC Square → Nathan Phillips Square in Verified PATH should return `DATA_NOT_AVAILABLE` with no invented route or time. The unverified Tim Hortons business card must have navigation disabled.
+
+## Tests and quality gates
+
 ```bash
-git init
-git add .
-git commit -m "feat: initialize PATHway Toronto day 01 prototype"
-git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/pathway-toronto.git
-git push -u origin main
+cd backend && source .venv/bin/activate && python -m pytest -q
+cd ../frontend && npm run lint && npm run build
+npm audit --omit=dev --audit-level=high
 ```
-Create an empty repo on GitHub first. Never commit `.env` or secrets. If working in an existing repository, adapt these steps rather than replacing its history.
 
-## Development
-Read [30-day milestones](docs/30_DAY_PLAN.md) and [architecture/provenance](docs/ARCHITECTURE.md). Every milestone should have a separate commit; create feature branches/PRs once the project is on GitHub.
+CI checks backend tests and frontend builds. For reproducible CI, generate and commit `frontend/package-lock.json` using `npm install` on a connected machine. The dependency upgrade to Next.js >=15.5.29 **must be installed and audited locally before public deployment**.
 
-## Sources
-- City of Toronto official PATH map: https://www.toronto.ca/wp-content/uploads/2024/01/94dd-PATH-Basemap-2023-12-FINAL.pdf
-- Royal Bank Plaza retail directory: https://royalbankplaza.com/food-and-drinks
-- Royal Bank Plaza building description: https://royalbankplaza.com/building-info
+## Relevant endpoints
 
-No external photos, maps, logos or copyrighted floor plans are bundled. Current illustration is original CSS/SVG and should not be confused with a genuine PATH floor plan.
+| Route | Purpose |
+| --- | --- |
+| `GET /health` | Current data mode and verified-edge count |
+| `GET /api/v2/indoor/coverage` | Documented place names and verified floor coverage |
+| `GET /api/v2/indoor/catalog` | Official building-directory business listing search |
+| `GET /api/v2/indoor/scene` | Licensed reviewed corridor features for map and 3D |
+| `GET /api/v2/indoor/snap?lon=...&lat=...&level=...` | Validate proposed point against reviewed walking nodes |
+| `GET /api/v2/indoor/route?start=...&end=...` | Route on verified indoor graph only, or return no-data |
+| `GET /api/v1/route?mode=demo&start=...&end=...` | **Synthetic demonstration only** |
 
+## Data and rights
 
-## Accelerated Session 1 (original Days 4–8)
+The City of Toronto's *January 2026 PATH Network* map and Mappedin's interactive PATH map are **research/experience references only**, not datasets licensed for reproduction. The City map states that reproduction, distribution, or alteration needs written City permission. The Mappedin map/SDK does not grant permission to copy its underlying venue data. OpenStreetMap data would require individual coverage assessment and ODbL attribution/share-alike compliance. Property owners control the individual PATH segments within their buildings.
 
-A provenance-aware entrance dataset, an optional PostGIS schema and a synthetic A* routing demonstration are available. **The synthetic route results are not real-world directions.** See [`docs/ACCELERATED_DAY_01_ORIGINAL_04_08.md`](docs/ACCELERATED_DAY_01_ORIGINAL_04_08.md).
+We need either venue/property agreements, commissioned and licensed original surveys, or independently vetted lawful data covering corridors, floors, retail units and accessibility transitions. See [data rights](docs/SESSION_06_DATA_RIGHTS.md), [mappedin gap assessment](docs/SESSION_06_GAP_ASSESSMENT.md), and [partner request](docs/DATA_PARTNERSHIP_REQUEST.md).
+
+## Deployment status and next steps
+
+**Status:** Technical/portfolio research prototype, **not live route-planning software**. Consult [deployment guide](docs/SESSION_06_DEPLOY.md), [release quality checks](docs/SESSION_06_ACCEPTANCE.md) and [Session 6 release notes](docs/SESSION_06_RELEASE.md) before using a publicly accessible domain.
+
+The four Day 27–30 commits are staged locally first and pushed to GitHub together at the end of the accelerated session. The 30-day exercise ends here; obtaining/verifying actual PATH geometry is the next major project phase and cannot be manufactured by more code alone.
+
+### Primary references
+
+- [City of Toronto PATH information and map](https://www.toronto.ca/explore-enjoy/visitor-toronto/path-torontos-downtown-pedestrian-walkway/)
+- [Mappedin interactive Toronto PATH reference](https://www.mappedin.com/map-gallery/path-map-toronto/)
+- [Mappedin developer SDK access terms](https://developer.mappedin.com/web-sdk/getting-started)
+- [OpenStreetMap Simple Indoor Tagging](https://wiki.openstreetmap.org/wiki/Simple_Indoor_Tagging)
+- [Royal Bank Plaza property directory](https://royalbankplaza.com/food-and-drinks)
+
+This repository does not contain copyrighted PATH map graphics, Mappedin venue geometry, or private API credentials.
