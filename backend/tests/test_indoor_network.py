@@ -23,7 +23,7 @@ def test_synthetic_fixture_validates_but_is_not_shipped_in_production():
     registry = {"sources": [{"id": "test-only-original-survey", "routable_geometry_provided": True, "redistribution_authorized": True}]}
     nodes = [{"id": i, "name": i, "kind": "junction", "level": level, "lat": 43.64, "lon": -79.38, "position_status": "VERIFIED_JUNCTION", "source_ids": ["test-only-original-survey"]} for i, level in [("a", -1), ("b", -1), ("c", -2)]]
     def edge(i, a, b, kind, distance, access):
-        return {"id": i, "from": a, "to": b, "kind": kind, "length_m": distance, "accessible": access, "verified_on": "2026-11-16", "review_status": "VERIFIED", "source_id": "test-only-original-survey", "geometry": [[-79.3801, 43.64],[-79.38,43.6401]]}
+        return {"id": i, "from": a, "to": b, "kind": kind, "length_m": distance, "accessible": access, "verified_on": "2026-11-16", "review_status": "VERIFIED", "source_id": "test-only-original-survey", "geometry": [[-79.3801, 43.64],[-79.38,43.6401]], "direction": "BOTH", "operational_status": "UNKNOWN"}
     graph = validate_network({"schema_version": "1.0", "nodes": nodes, "edges": [edge("ab", "a", "b", "corridor", 10, True), edge("bc", "b", "c", "stairs", 4, False)]}, registry)
     assert shortest_indoor_route(graph, "a", "c")[0] == ["a", "b", "c"]
     assert shortest_indoor_route(graph, "a", "c", accessible_only=True) is None

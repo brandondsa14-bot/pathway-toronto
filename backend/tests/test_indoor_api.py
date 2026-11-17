@@ -49,7 +49,7 @@ def test_verified_test_only_graph_can_produce_steps(monkeypatch):
             {'id': 'b', 'name': 'Test junction', 'kind': 'junction', 'level': -1, 'position_status': 'VERIFIED_JUNCTION'},
         ],
         'edges': [
-            {'id': 't1', 'from': 'a', 'to': 'b', 'kind': 'corridor', 'length_m': 42.0, 'accessible': True, 'geometry': [[-79.38, 43.64], [-79.379, 43.64]], 'verified_on': '2026-11-16', 'source_id': 'unit-test-only'}
+            {'id': 't1', 'from': 'a', 'to': 'b', 'kind': 'corridor', 'length_m': 42.0, 'accessible': True, 'geometry': [[-79.38, 43.64], [-79.379, 43.64]], 'verified_on': '2026-11-16', 'source_id': 'unit-test-only', 'direction':'BOTH', 'operational_status':'UNKNOWN', 'id':'t1'}
         ],
     })
     r = c.get('/api/v2/indoor/route', params={'start': 'a', 'end': 'b', 'accessible_only': 'true'})

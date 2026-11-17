@@ -35,7 +35,11 @@ class RouteResponse(BaseModel):
     avoid_floor_changes_filter:bool = False
 
 @app.get('/health')
-def health():return {'status':'ok','project':'PATHway Toronto','milestone':'accelerated-day-1-original-4-8','data_mode':'verified-entrances + synthetic-routing'}
+def health():
+    from .indoor_network import load_network
+    return {'status': 'ok', 'project': 'PATHway Toronto',
+            'data_mode': 'research-only; v1 synthetic; v2 evidence-gated',
+            'verified_indoor_edges': len(load_network()['edges'])}
 
 @app.get('/api/v1/network')
 def network(mode: str=Query('verified',pattern='^(verified|demo)$')):

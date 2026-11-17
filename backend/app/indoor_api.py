@@ -4,6 +4,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 from .indoor_network import load_network, shortest_indoor_route
 from .indoor_catalog import load_catalog, search_catalog
+from .route_instructions import route_steps
 
 router = APIRouter(prefix="/api/v2/indoor", tags=["indoor-evidence"])
 
@@ -59,8 +60,5 @@ def indoor_only_route(
     if result is None:
         return {**base, "status": "NO_VERIFIED_CONNECTION", "message": "No connected indoor-only route is supported by the currently verified segments and preferences. No outdoor detour is generated automatically."}
     ids, traversed_edges = result
-    steps = []
-    for i, edge in enumerate(traversed_edges):
-        a, b = ids[i], ids[i+1]
-        steps.append({"from": a, "to": b, "instruction": f"Follow verified {edge['kind']} from {nodes[a]['name']} (level {nodes[a]['level']}) to {nodes[b]['name']} (level {nodes[b]['level']}).", "kind": edge["kind"], "length_m": edge["length_m"], "floor_from": nodes[a]["level"], "floor_to": nodes[b]["level"], "accessible": edge["accessible"], "geometry": edge["geometry"], "verified_on": edge["verified_on"], "source_id": edge["source_id"]})
+    steps = route_steps(nodes, ids, traversed_edges)
     return {**base, "status": "VERIFIED_SEGMENTS_ROUTE", "message": "Route uses only source-reviewed, licensed indoor edges; confirm current closures before walking.", "route": {"nodes": ids, "labels": [nodes[ident]["name"] for ident in ids], "distance_m": round(sum(e["length_m"] for e in traversed_edges), 1), "time_minutes": None, "steps": steps, "floor_changes": sum(nodes[ids[i]]["level"] != nodes[ids[i+1]]["level"] for i in range(len(ids)-1))}}

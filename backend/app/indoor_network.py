@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from heapq import heappush, heappop
 from itertools import count
-from math import isfinite
+from math import isfinite, cos, radians, hypot
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +16,15 @@ INDOOR_PATH = Path(__file__).resolve().parents[2] / "data" / "indoor" / "indoor_
 SOURCES_PATH = Path(__file__).resolve().parents[2] / "data" / "indoor" / "source_registry.json"
 ALLOWED_KINDS = {"corridor", "door", "stairs", "elevator", "escalator", "ramp"}
 VERTICAL_KINDS = {"stairs", "elevator", "escalator"}
+DIRECTIONS = {"BOTH", "FORWARD", "REVERSE"}
+OPERATIONS = {"UNKNOWN", "CONFIRMED_OPEN", "CONFIRMED_CLOSED"}
+
+
+def _endpoint_separation_m(a: dict, point: list) -> float:
+    """Small local-distance QA only, never used for routing or travel length."""
+    return hypot((point[0] - float(a["lon"])) * 111_320 * cos(radians(float(a["lat"]))),
+                 (point[1] - float(a["lat"])) * 111_320)
+
 
 
 class NetworkValidationError(ValueError):
@@ -70,6 +79,12 @@ def validate_network(network: dict[str, Any], registry: dict[str, Any]) -> dict[
             raise NetworkValidationError("Missing licensed and reviewed corridor source")
         if edge.get("kind") not in ALLOWED_KINDS:
             raise NetworkValidationError("Unrecognized corridor/transition kind")
+        if edge.get("direction") not in DIRECTIONS:
+            raise NetworkValidationError("Surveyed segment requires explicit travel direction")
+        if edge.get("operational_status") not in OPERATIONS:
+            raise NetworkValidationError("Segment needs an explicit (possibly UNKNOWN) operational status")
+        if edge["kind"] in {"stairs", "escalator"} and edge.get("accessible") is True:
+            raise NetworkValidationError("Stairs/escalators cannot be marked wheelchair-accessible")
         if edge.get("accessible") not in (True, False, None):
             raise NetworkValidationError("Accessibility must be true, false, or unknown")
         distance = _numeric(edge.get("length_m"), "length_m")
@@ -89,6 +104,8 @@ def validate_network(network: dict[str, Any], registry: dict[str, Any]) -> dict[
             lon, lat = _numeric(pt[0], "lon"), _numeric(pt[1], "lat")
             if not (-180 <= lon <= 180 and -90 <= lat <= 90):
                 raise NetworkValidationError("Line geometry out of bounds")
+        if _endpoint_separation_m(nodes[a], geometry[0]) > 20 or _endpoint_separation_m(nodes[b], geometry[-1]) > 20:
+            raise NetworkValidationError("Segment geometry must connect its surveyed endpoint coordinates (20 m QA threshold)")
     return network
 
 
@@ -107,13 +124,17 @@ def shortest_indoor_route(network: dict[str, Any], start: str, end: str, accessi
         return ([start], [])
     adjacency: dict[str, list[tuple[str, float, dict[str, Any]]]] = {n: [] for n in nodes}
     for edge in network["edges"]:
+        if edge.get("operational_status") == "CONFIRMED_CLOSED":
+            continue
         if accessible_only and edge["accessible"] is not True:
             continue  # unknown is never assumed wheelchair-accessible
         if avoid_floor_changes and nodes[edge["from"]]["level"] != nodes[edge["to"]]["level"]:
             continue
         a, b = edge["from"], edge["to"]
-        adjacency[a].append((b, float(edge["length_m"]), edge))
-        adjacency[b].append((a, float(edge["length_m"]), edge))
+        if edge["direction"] in {"BOTH", "FORWARD"}:
+            adjacency[a].append((b, float(edge["length_m"]), edge))
+        if edge["direction"] in {"BOTH", "REVERSE"}:
+            adjacency[b].append((a, float(edge["length_m"]), edge))
     sequence = count()
     queue = [(0.0, next(sequence), start)]
     best = {start: 0.0}
