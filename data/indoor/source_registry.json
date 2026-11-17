@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "review_date": "2026-11-16",
+  "sources": [
+    {
+      "id": "toronto-path-2026",
+      "title": "Toronto PATH Network — January 2026",
+      "url": "https://www.toronto.ca/wp-content/uploads/2024/01/94dd-PATH-Basemap-2023-12-FINAL.pdf",
+      "publisher": "City of Toronto",
+      "published": "2026-01",
+      "type": "official_network_diagram",
+      "license_review": "Map copyright retained by City; reproduction, distribution or alteration requires written permission. No geometry digitized or embedded.",
+      "allowed_use_in_this_repository": "Bibliographic citation and names for research/verification planning only",
+      "routable_geometry_provided": false
+    },
+    {
+      "id": "mappedin-reference",
+      "title": "Mappedin Toronto PATH gallery",
+      "url": "https://www.mappedin.com/map-gallery/path-map-toronto/",
+      "publisher": "Mappedin",
+      "type": "interface_reference",
+      "license_review": "Reference only. No venue data, proprietary 3D geometry, code or assets redistributed.",
+      "allowed_use_in_this_repository": "User-experience inspiration",
+      "routable_geometry_provided": false
+    },
+    {
+      "id": "osm-indoor-standard",
+      "title": "OpenStreetMap Simple Indoor Tagging",
+      "url": "https://wiki.openstreetmap.org/wiki/Simple_Indoor_Tagging",
+      "publisher": "OpenStreetMap community",
+      "type": "data_model_reference",
+      "license_review": "Any imported OSM data needs ODbL attribution and share-alike review; no OSM geometry is bundled.",
+      "allowed_use_in_this_repository": "Schema design reference",
+      "routable_geometry_provided": false
+    }
+  ]
+}
